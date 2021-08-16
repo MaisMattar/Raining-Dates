@@ -1,0 +1,29 @@
+/** @format */
+
+.ageGroupText {
+  margin-top: 30px;
+  font-size: 50px;
+  margin-left: 50px;
+  color: rgb(62, 121, 170);
+  font-weight: bold;
+}
+
+.peoplePictureList {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+.peoplePictureListItem {
+  position: relative;
+  margin-top: 30px;
+}
+
+.peoplePicture {
+  width: 170px;
+  height: 170px;
+  border-radius: 10px;
+  -webkit-box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
+  box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
+  cursor: pointer;
+}

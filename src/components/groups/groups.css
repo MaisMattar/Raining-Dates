@@ -1,0 +1,29 @@
+/** @format */
+
+.groupList {
+  padding: 0;
+  margin: 50px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 30% 30% 30%;
+  grid-gap: 4em;
+}
+
+.groupListItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 180px;
+  background-color: rgb(91, 151, 200);
+  cursor: pointer;
+  border-radius: 1em;
+
+  -webkit-box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
+  box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
+}
+
+.groupListItemText {
+  font-size: 40px;
+  color: white;
+}

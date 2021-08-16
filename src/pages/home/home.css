@@ -1,0 +1,14 @@
+/** @format */
+
+.homeContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.homeContainerText {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  color: rgb(62, 121, 170);
+  font-size: 30px;
+}

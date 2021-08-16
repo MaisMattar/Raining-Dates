@@ -1,0 +1,33 @@
+/** @format */
+
+.profileInfoWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.profileInfo,
+.profileInfoDesc {
+  display: flex;
+
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profileInfo {
+  font-size: 26px;
+  color: rgb(88, 88, 88);
+}
+
+.profileInfoDesc {
+  font-size: 26px;
+  font-weight: bold;
+
+  color: rgb(88, 88, 88);
+}
+
+.infoDesc,
+.infoText {
+  margin-bottom: 10px;
+  word-wrap: break-word;
+  width: 300px;
+}

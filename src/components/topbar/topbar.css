@@ -1,0 +1,38 @@
+/** @format */
+
+.topbarContainer {
+  height: 70px;
+  width: 100%;
+  background-color: rgb(62, 121, 170);
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+}
+
+.logo {
+  font-size: 30px;
+  margin-left: 20px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.topbarLeft {
+  flex: 5;
+}
+
+.topbarRight {
+  flex: 2;
+  color: white;
+}
+
+.topbarIcons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.topbarIconItem {
+  margin-right: 15px;
+  cursor: pointer;
+}
