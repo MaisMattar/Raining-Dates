@@ -36,3 +36,15 @@
   margin-right: 15px;
   cursor: pointer;
 }
+
+.topbarHomeLink {
+  text-decoration: none;
+}
+
+.topbarIconLink {
+  color: white;
+}
+
+.topbarIconLink:active {
+  color: darksalmon;
+}
