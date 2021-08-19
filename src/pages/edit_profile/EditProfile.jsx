@@ -16,7 +16,6 @@ export default function EditProfile() {
   const passwordRef = useRef(null);
   const educationRef = useRef(null);
   const workplaceRef = useRef(null);
-  const aboutRef = useRef(null);
   const history = useHistory();
   const { currentUser, updateEmail, updatePassword } = useAuth();
   const [error, setError] = useState("");
@@ -69,13 +68,6 @@ export default function EditProfile() {
       id: "workplace",
       label: "Workplace",
       ref: workplaceRef,
-      type: "text",
-      defaultValue: "",
-    },
-    {
-      id: "about",
-      label: "Talk About Yourself",
-      ref: aboutRef,
       type: "text",
       defaultValue: "",
     },

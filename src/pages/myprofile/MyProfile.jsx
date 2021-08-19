@@ -6,6 +6,7 @@ import MyProfilePictures from "../../components/my_profile_pictures/MyProfilePic
 import Topbar from "../../components/topbar/Topbar";
 import "./myprofile.css";
 import { useHistory } from "react-router-dom";
+import firebase from "firebase";
 
 export default function MyProfile() {
   const history = useHistory();

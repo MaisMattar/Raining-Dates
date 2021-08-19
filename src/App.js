@@ -2,7 +2,6 @@
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./components/contexts/AuthContext";
-
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import MyProfile from "./pages/myprofile/MyProfile";
@@ -11,6 +10,7 @@ import Profile from "./pages/profile/Profile";
 import AgeGroup from "./pages/agegroup/AgeGroup";
 import PrivateRoute from "./components/PrivateRoute";
 import EditProfile from "./pages/edit_profile/EditProfile";
+import firebase from "firebase";
 
 function App() {
   const ageGroups = ["20-30", "30-40", "40-50", "50-60", "60-70", "70-80"];
