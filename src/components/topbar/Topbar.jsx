@@ -2,9 +2,25 @@
 
 import "./topbar.css";
 import { AccountBox, Chat, ExitToApp } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { useAuth } from "../../components/contexts/AuthContext";
+import { useState } from "react";
 
 export default function Topbar() {
+  const { logout } = useAuth();
+  const [error, setError] = useState("");
+  const history = useHistory();
+
+  async function handleLogout() {
+    setError("");
+    try {
+      await logout();
+      console.log("logged out");
+      history.push("/login");
+    } catch {
+      setError("Failed to logout");
+    }
+  }
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -15,7 +31,7 @@ export default function Topbar() {
       <div className="topbarRight">
         <div className="topbarIcons">
           <div className="topbarIconItem">
-            <Link className="topbarIconLink" to="/profile">
+            <Link className="topbarIconLink" to="/myprofile">
               <AccountBox />
             </Link>
           </div>
@@ -24,7 +40,7 @@ export default function Topbar() {
           </div>
           <div className="topbarIconItem">
             <Link className="topbarIconLink" to="/login">
-              <ExitToApp />
+              <ExitToApp onClick={handleLogout} />
             </Link>
           </div>
         </div>

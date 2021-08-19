@@ -31,15 +31,8 @@ const profileInfo = [
   "December 18, 1963",
   "Actor",
   "Hollywood",
-  "bla bla bla dfhakhfgkerhflwskefjlfgjlsdjslgjhlrdfk;flgjse;dekfjg;sdlkfljgsldojfkdhgolsdwslwghrerhugk",
+  "bla bla bla dfhakhfgkerhflwskefjlfgjlsdjslgjhlrdfk;flkhfkhfskdhfldkfgkjdhfgjkhdfgdgjse;dekfjg;sdlkfljgsldojfkdhgolsdwslwghrerhugk",
 ];
-
-const styles = {
-  largeIcon: {
-    width: 60,
-    height: 60,
-  },
-};
 
 export default function Profile() {
   return (

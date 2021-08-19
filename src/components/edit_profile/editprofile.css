@@ -1,0 +1,33 @@
+/** @format */
+
+.editprofileContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.editprofileLeft {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 2;
+}
+
+.editprofileRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 3;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  flex-direction: column;
+}
+
+.saveChangesButton {
+  height: 45px;
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}

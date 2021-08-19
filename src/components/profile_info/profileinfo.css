@@ -7,21 +7,20 @@
 
 .profileInfo,
 .profileInfoDesc {
+  flex: 1;
   display: flex;
-
   flex-direction: column;
   align-items: flex-start;
 }
 
 .profileInfo {
-  font-size: 26px;
+  font-size: 20px;
   color: rgb(88, 88, 88);
 }
 
 .profileInfoDesc {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: bold;
-
   color: rgb(88, 88, 88);
 }
 

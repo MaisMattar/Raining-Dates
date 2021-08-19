@@ -1,13 +1,21 @@
 /** @format */
 
 import "./login.css";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Alert } from "react-bootstrap";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../../components/contexts/AuthContext";
 
 export default function Login() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const { currentUser, login } = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
+  console.log(currentUser ? currentUser.email : "no current user");
 
   const loginInfo = [
     { id: "email", label: "Email", type: "email", ref: emailRef },
@@ -23,13 +31,18 @@ export default function Login() {
     );
   });
 
-  const doLogIn = () => {
-    console.log("login");
-  };
-
-  const doSignUp = () => {
-    console.log("signup");
-  };
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      setError("");
+      setLoading(true);
+      await login(emailRef.current.value, passwordRef.current.value);
+      history.push("/");
+    } catch {
+      setError("Failed to log in");
+    }
+    setLoading(false);
+  }
   return (
     <div className="login">
       <div className="loginWrapper">
@@ -38,14 +51,20 @@ export default function Login() {
           <span className="loginDesc">Find your next date</span>
         </div>
         <div className="loginRight">
+          {error && (
+            <Alert variant="danger" className="loginAlert">
+              {error}
+            </Alert>
+          )}
           <div className="loginBox">
-            <Form className="signupForm">{loginInfoInputs}</Form>
-            <Button type="submit" className="loginButton" onClick={doLogIn}>
-              Log In
-            </Button>
-            <div className="signUpText">Don't have an account?</div>
-            <div className="signUpText">
-              <Link to="/signup"> Sign Up</Link>
+            <Form onSubmit={handleSubmit}>
+              {loginInfoInputs}
+              <Button disabled={loading} type="submit" className="loginButton">
+                Log In
+              </Button>
+            </Form>
+            <div className="signupText">
+              Don't have an account? <Link to="/signup">Sign Up</Link>
             </div>
           </div>
         </div>

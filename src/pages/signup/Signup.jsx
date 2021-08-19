@@ -4,6 +4,7 @@ import "./signup.css";
 import { Button, Form, Alert } from "react-bootstrap";
 import { useRef, useState } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
+import { Link, useHistory } from "react-router-dom";
 
 export default function Signup() {
   const firstnameRef = useRef(null);
@@ -14,11 +15,12 @@ export default function Signup() {
   const { signup } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const registerInfo = [
     { id: "firstname", label: "First Name", type: "text", ref: firstnameRef },
     { id: "lastname", label: "Last Name", type: "text", ref: lastnameRef },
-    { id: "date", label: "Date of Birth", type: "text", ref: dateRef },
+    { id: "date", label: "Date of Birth", type: "date", ref: dateRef },
     { id: "email", label: "Email", type: "email", ref: emailRef },
     { id: "password", label: "Password", type: "password", ref: passwordRef },
   ];
@@ -38,6 +40,7 @@ export default function Signup() {
       setError("");
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
+      history.push("/");
     } catch {
       setError("Failed to create an account");
     }
@@ -52,14 +55,21 @@ export default function Signup() {
           <span className="signupDesc">Find your next date</span>
         </div>
         <div className="signupRight">
+          {error && (
+            <Alert variant="danger" classNsme="signupAlert">
+              {error}
+            </Alert>
+          )}
           <div className="signupBox">
-            {error && <Alert variant="danger">{error}</Alert>}
-            <Form className="signupForm" onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
               {registerInfoInputs}
               <Button disabled={loading} type="submit" className="signupButton">
                 Sign Up
               </Button>
             </Form>
+            <div className="loginText">
+              Already have an account? <Link to="/login">Log In</Link>
+            </div>
           </div>
         </div>
       </div>

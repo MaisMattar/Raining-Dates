@@ -17,12 +17,14 @@
   height: 70%;
   display: flex;
 }
+
 .loginLeft,
 .loginRight {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .loginLogo {
@@ -54,14 +56,17 @@
 
 .loginButton {
   height: 45px;
+  width: 100%;
   border-radius: 10px;
-  border: none;
-  margin-bottom: 15px;
   margin-top: 15px;
 }
 
-.signUpText {
-  font-size: 17px;
-  display: flex;
-  justify-content: center;
+.signupText {
+  text-align: center;
+}
+
+.loginAlert {
+  width: 370px;
+  text-align: center;
+  font-size: 18px;
 }

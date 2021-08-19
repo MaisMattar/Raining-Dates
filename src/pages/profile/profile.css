@@ -4,13 +4,13 @@
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .profileText {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 30px;
   color: rgb(62, 121, 170);
   font-weight: bold;
@@ -19,7 +19,6 @@
 .profileButtons {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
 }
 
 .profileInterested,
