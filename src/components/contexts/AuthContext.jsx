@@ -38,7 +38,9 @@ export function AuthProvider({ children }) {
       setCurrentUser(user);
       setLoading(false);
     });
-    return unsubscriber;
+    return () => {
+      unsubscriber();
+    };
   }, []);
 
   const value = {

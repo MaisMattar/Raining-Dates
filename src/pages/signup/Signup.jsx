@@ -2,7 +2,7 @@
 
 import "./signup.css";
 import { Button, Form, Alert } from "react-bootstrap";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 
@@ -43,9 +43,13 @@ export default function Signup() {
       history.push("/");
     } catch {
       setError("Failed to create an account");
+      setLoading(false);
     }
-    setLoading(false);
   }
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   return (
     <div className="signup">

@@ -2,7 +2,7 @@
 
 import "./login.css";
 import { Button, Form, Alert } from "react-bootstrap";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
@@ -40,9 +40,14 @@ export default function Login() {
       history.push("/");
     } catch {
       setError("Failed to log in");
+      setLoading(false);
     }
-    setLoading(false);
   }
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
   return (
     <div className="login">
       <div className="loginWrapper">
