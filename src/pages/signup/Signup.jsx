@@ -56,7 +56,7 @@ export default function Signup() {
         </div>
         <div className="signupRight">
           {error && (
-            <Alert variant="danger" classNsme="signupAlert">
+            <Alert variant="danger" className="signupAlert">
               {error}
             </Alert>
           )}

@@ -4,21 +4,18 @@ import "./topbar.css";
 import { AccountBox, Chat, ExitToApp } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
-import { useState } from "react";
 
 export default function Topbar() {
   const { logout } = useAuth();
-  const [error, setError] = useState("");
   const history = useHistory();
 
   async function handleLogout() {
-    setError("");
     try {
       await logout();
       console.log("logged out");
       history.push("/login");
     } catch {
-      setError("Failed to logout");
+      console.log("Failed to logout");
     }
   }
   return (

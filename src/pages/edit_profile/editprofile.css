@@ -31,3 +31,10 @@
   margin-top: 20px;
   margin-bottom: 15px;
 }
+
+.editprofileAlert {
+  width: 280px;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 10px;
+}

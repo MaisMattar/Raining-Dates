@@ -1,12 +1,12 @@
 /** @format */
 
-import React from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
 import { useRef } from "react";
 import "./editprofile.css";
-import Topbar from "../topbar/Topbar";
+import Topbar from "../../components/topbar/Topbar";
 import { useHistory, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../components/contexts/AuthContext";
 
 export default function EditProfile() {
   const firstnameRef = useRef(null);
@@ -18,7 +18,9 @@ export default function EditProfile() {
   const workplaceRef = useRef(null);
   const aboutRef = useRef(null);
   const history = useHistory();
-  const { currentUser } = useAuth();
+  const { currentUser, updateEmail, updatePassword } = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const profileInfo = [
     {
@@ -83,24 +85,48 @@ export default function EditProfile() {
     return (
       <Form.Group>
         <Form.Label>{info.label}</Form.Label>
-        <Col>
-          <Form.Control
-            ref={info.ref}
-            type={info.type}
-            defaultValue={info.defaultValue}
-            placeholder={
-              info.id === "password" ? "Leave blank to keep the same" : ""
-            }
-            style={{ width: "260px" }}
-          ></Form.Control>
-        </Col>
+        <Form.Control
+          ref={info.ref}
+          type={info.type}
+          defaultValue={info.defaultValue}
+          placeholder={
+            info.id === "password" ? "Leave blank to keep the same" : ""
+          }
+          style={{ width: "260px" }}
+        ></Form.Control>
       </Form.Group>
     );
   });
 
   function handleSubmit(e) {
-    console.log("submit");
-    history.push("/myprofile");
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    const promises = [];
+
+    if (emailRef.current.value !== currentUser.email) {
+      console.log("updatingEmail");
+      promises.push(updateEmail(emailRef.current.value));
+    }
+
+    if (
+      passwordRef.current.value !== "" &&
+      passwordRef.current.value !== currentUser.pasword
+    ) {
+      promises.push(updatePassword(passwordRef.current.value));
+    }
+
+    Promise.all(promises)
+      .then(() => {
+        history.push("/myprofile");
+      })
+      .catch(() => {
+        setError("Failed to update profile");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (
@@ -113,11 +139,20 @@ export default function EditProfile() {
         <div className="editprofileRight">
           <Form onSubmit={handleSubmit}>
             {registerInfoInputs}
-            <Button type="submit" className="saveChangesButton">
+            <Button
+              disabled={loading}
+              type="submit"
+              className="saveChangesButton"
+            >
               Save Changes
             </Button>
           </Form>
           <Link to="/myprofile">Cancel</Link>
+          {error && (
+            <Alert variant="danger" className="editprofileAlert">
+              {error}
+            </Alert>
+          )}
         </div>
       </div>
     </>

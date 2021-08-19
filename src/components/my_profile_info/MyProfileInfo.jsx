@@ -1,7 +1,6 @@
 /** @format */
 
 import "./myprofileinfo.css";
-import { TextField } from "@material-ui/core";
 
 export default function MyProfileInfo() {
   const profileInfo = [

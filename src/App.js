@@ -10,12 +10,12 @@ import Signup from "./pages/signup/Signup";
 import Profile from "./pages/profile/Profile";
 import AgeGroup from "./pages/agegroup/AgeGroup";
 import PrivateRoute from "./components/PrivateRoute";
-import EditProfile from "./components/edit_profile/EditProfile";
+import EditProfile from "./pages/edit_profile/EditProfile";
 
 function App() {
   const ageGroups = ["20-30", "30-40", "40-50", "50-60", "60-70", "70-80"];
 
-  const ageGroupsRoutes = ageGroups.map((group, index) => {
+  const ageGroupsRoutes = ageGroups.map((group) => {
     return (
       <PrivateRoute
         path={`/${group}`}
