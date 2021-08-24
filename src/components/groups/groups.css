@@ -1,12 +1,12 @@
 /** @format */
 
 .groupList {
-  padding: 0;
-  margin: 50px;
   list-style: none;
   display: grid;
-  grid-template-columns: 30% 30% 30%;
-  grid-gap: 4em;
+  margin: 30px auto 30px auto;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 2em;
+  max-width: 960px;
 }
 
 .groupListItem {
@@ -18,7 +18,6 @@
   background-color: rgb(91, 151, 200);
   cursor: pointer;
   border-radius: 1em;
-
   -webkit-box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
   box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
 }
@@ -30,4 +29,5 @@
 
 .groupsLink {
   text-decoration: none;
+  width: 250px;
 }

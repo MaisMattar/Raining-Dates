@@ -6,7 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
 
 export default function Topbar() {
-  const { logout } = useAuth();
+  const { currentUser, logout } = useAuth();
   const history = useHistory();
 
   async function handleLogout() {
@@ -26,21 +26,23 @@ export default function Topbar() {
         </Link>
       </div>
       <div className="topbarRight">
-        <div className="topbarIcons">
-          <div className="topbarIconItem">
-            <Link className="topbarIconLink" to="/myprofile">
-              <AccountBox />
-            </Link>
+        {currentUser && (
+          <div className="topbarIcons">
+            <div className="topbarIconItem">
+              <Link className="topbarIconLink" to="/myprofile">
+                <AccountBox />
+              </Link>
+            </div>
+            <div className="topbarIconItem">
+              <Chat />
+            </div>
+            <div className="topbarIconItem">
+              <Link className="topbarIconLink" to="/login">
+                <ExitToApp onClick={handleLogout} />
+              </Link>
+            </div>
           </div>
-          <div className="topbarIconItem">
-            <Chat />
-          </div>
-          <div className="topbarIconItem">
-            <Link className="topbarIconLink" to="/login">
-              <ExitToApp onClick={handleLogout} />
-            </Link>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

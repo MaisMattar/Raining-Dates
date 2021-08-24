@@ -2,8 +2,7 @@
 
 .signup {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: auto;
   width: 100%;
   height: 100%;
   background-image: url("https://www.juneauempire.com/wp-content/uploads/2018/11/6044053_web1_rodion-kutsaev-760882-unsplash.jpg");
@@ -11,12 +10,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .signupWrapper {
   width: 70%;
-  height: 70%;
+  height: 100%;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .signupLeft,
@@ -44,7 +45,7 @@
 }
 
 .signupBox {
-  height: 5600px;
+  height: 500px;
   width: 370px;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.664);
@@ -64,11 +65,27 @@
 
 .loginText {
   text-align: center;
-  margin-top: 15px;
 }
 
 .signupAlert {
   width: 370px;
   text-align: center;
   font-size: 18px;
+}
+
+.uploadImageButton {
+  height: 35px;
+  width: 150px;
+  background-color: royalblue;
+
+  border-radius: 3px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.uploadImageText {
+  font-size: 17px;
+  text-align: center;
+  color: white;
+  padding: 5px 0;
 }

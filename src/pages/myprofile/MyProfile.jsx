@@ -3,10 +3,8 @@
 import { Button } from "react-bootstrap";
 import MyProfileInfo from "../../components/my_profile_info/MyProfileInfo";
 import MyProfilePictures from "../../components/my_profile_pictures/MyProfilePictures";
-import Topbar from "../../components/topbar/Topbar";
 import "./myprofile.css";
 import { useHistory } from "react-router-dom";
-import firebase from "firebase";
 
 export default function MyProfile() {
   const history = useHistory();
@@ -17,8 +15,7 @@ export default function MyProfile() {
 
   return (
     <>
-      <Topbar />
-      <div className="myProfileText">Welcome To Your Profile</div>
+      <div className="myProfileText">Your Profile</div>
       <div className="myProfileContainer">
         <div className="myprofileLeft">
           <MyProfilePictures />

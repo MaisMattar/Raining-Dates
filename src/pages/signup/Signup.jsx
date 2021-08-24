@@ -17,7 +17,6 @@ export default function Signup() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
   const history = useHistory();
 
   const registerInfo = [
@@ -37,15 +36,29 @@ export default function Signup() {
     );
   });
 
+  function parseDate(s) {
+    var b = s.split(/\D/);
+    return new Date(b[0], --b[1], b[2]);
+  }
+
   const handleChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
     }
+    setLoading(false);
   };
 
-  const handleUploadImage = (e) => {
-    setLoading(true);
-    const uploadImage = storage.ref(`images/${image.name}`).put(image);
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const docRef = firebase
+      .firestore()
+      .collection("users")
+      .doc(emailRef.current.value);
+
+    const imageName = emailRef.current.value + image.name;
+
+    const uploadImage = storage.ref(`images/${imageName}`).put(image);
     uploadImage.on(
       "state_changed",
       (snapshot) => {},
@@ -55,20 +68,33 @@ export default function Signup() {
       () => {
         storage
           .ref("images")
-          .child(image.name)
+          .child(imageName)
           .getDownloadURL()
           .then((url) => {
-            setImageUrl(url);
-            console.log("imageUrl: ", imageUrl);
+            docRef
+              .set({
+                first_name: firstnameRef.current.value,
+                last_name: lastnameRef.current.value,
+                date_of_birth: parseDate(dateRef.current.value),
+                email: emailRef.current.value,
+                images: [url],
+                education: "",
+                workplace: "",
+              })
+              .then(() => {
+                console.log("Document added succesfully!");
+                history.push("/");
+              })
+              .catch((e) => {
+                setError("Failed to create an account " + e);
+              });
             setLoading(false);
           });
       }
     );
-  };
 
-  async function handleSubmit(e) {
-    e.preventDefault();
     try {
+      if (error !== "") throw error;
       setError("");
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
@@ -77,26 +103,6 @@ export default function Signup() {
       setLoading(false);
       return;
     }
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(emailRef.current.value)
-      .set({
-        first_name: firstnameRef.current.value,
-        last_name: lastnameRef.current.value,
-        date_of_birth: dateRef.current.value,
-        email: emailRef.current.value,
-        images: [imageUrl],
-        education: "",
-        workplace: "",
-      })
-      .then(() => {
-        console.log("Document added succesfully!");
-        history.push("/");
-      })
-      .catch((e) => {
-        setError("Failed to create an account " + e);
-      });
   }
 
   return (
@@ -115,8 +121,14 @@ export default function Signup() {
           <div className="signupBox">
             <Form onSubmit={handleSubmit}>
               {registerInfoInputs}
-              <input type="file" onChange={handleChange} />
-              <Button onClick={handleUploadImage}>Upload Image</Button>
+              <div>
+                <label htmlFor="single">
+                  <div className="uploadImageButton">
+                    <div className="uploadImageText">Upload Image</div>
+                  </div>
+                </label>
+                <input type="file" id="single" onChange={handleChange} />
+              </div>
               <Button disabled={loading} type="submit" className="signupButton">
                 Sign Up
               </Button>

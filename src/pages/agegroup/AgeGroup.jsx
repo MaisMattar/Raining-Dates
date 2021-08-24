@@ -1,32 +1,58 @@
 /** @format */
 
-import Topbar from "../../components/topbar/Topbar";
 import "./agegroup.css";
 import { Link } from "react-router-dom";
+import firebase from "firebase";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../components/contexts/AuthContext";
 
 export default function AgeGroup(props) {
-  const peoplePictures = [
-    "https://pbs.twimg.com/profile_images/658970219507904513/4eK6qnpt.jpg",
-    "https://pbs.twimg.com/profile_images/378800000343295379/d47a05e470f6cdcef801d9e52312fc6f.jpeg",
-    "https://pbs.twimg.com/profile_images/661327212952457217/FSIcocm1_400x400.jpg",
-    "https://d26oc3sg82pgk3.cloudfront.net/files/media/edit/image/34592/square_thumb%402x.jpg",
-    "https://pbs.twimg.com/profile_images/743930229194915840/dAjMU2nA.jpg",
-    "https://pbs.twimg.com/profile_images/626449225052585984/0q5OffaF_400x400.jpg",
-  ];
+  const [peopleProfiles, setPeopleProfiles] = useState([]);
+  const { currentUser } = useAuth();
 
-  const pictures = peoplePictures.map((picture, index) => {
+  const getDateInTimestamp = (age) => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - age);
+    return firebase.firestore.Timestamp.fromDate(date);
+  };
+
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection("users")
+      .where("date_of_birth", "<", getDateInTimestamp(props.ageGroup.startAge))
+      .where("date_of_birth", ">=", getDateInTimestamp(props.ageGroup.endAge))
+      .get()
+      .then((querySnapshot) => {
+        const people = [];
+        querySnapshot.forEach((doc) => {
+          const documentData = doc.data();
+          if (documentData.email !== currentUser.email)
+            people.push(documentData);
+          console.log("documentData.email = ", documentData.email);
+        });
+        setPeopleProfiles(people);
+      });
+  }, [props.ageGroup.startAge, props.ageGroup.endAge, currentUser.email]);
+
+  const pictures = peopleProfiles.map((personProfile, index) => {
+    console.log("personProfile.email = ", personProfile.email);
     return (
-      <Link className="ageGroupLink" to="/profile">
-        <li key={index} className="peoplePictureListItem">
-          <img src={picture} alt={index} className="peoplePicture"></img>
-        </li>
-      </Link>
+      <li key={personProfile.email} className="peoplePictureListItem">
+        <Link className="ageGroupLink" to={"/profile/" + personProfile.email}>
+          <img
+            src={personProfile.images[0]}
+            alt={index}
+            className="peoplePicture"
+          ></img>
+        </Link>
+      </li>
     );
   });
+
   return (
     <div>
-      <Topbar />
-      <div className="ageGroupText">{props.ageGroup}</div>
+      <div className="ageGroupText">{props.ageGroup.text}</div>
       <ul className="peoplePictureList">{pictures}</ul>
     </div>
   );

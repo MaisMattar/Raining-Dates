@@ -13,6 +13,17 @@ export default function MyProfileInfo() {
   const [education, setEducation] = useState("");
   const [workplace, setWorkplace] = useState("");
 
+  const dateToString = (date) => {
+    let day = date.getDate();
+    day = day < 10 ? "0" + day : day;
+    let month = date.getMonth() + 1;
+    month = month < 10 ? "0" + month : month;
+
+    const year = date.getFullYear();
+
+    return day + "/" + month + "/" + year;
+  };
+
   const docRef = firebase
     .firestore()
     .collection("users")
@@ -23,9 +34,10 @@ export default function MyProfileInfo() {
     .then((doc) => {
       if (doc.exists) {
         const documentData = doc.data();
+        const date = documentData.date_of_birth.toDate();
         setFirstName(documentData.first_name);
         setLastName(documentData.last_name);
-        setDate(documentData.date_of_birth);
+        setDate(dateToString(date));
         setEducation(documentData.education);
         setWorkplace(documentData.workplace);
       } else {
@@ -47,7 +59,7 @@ export default function MyProfileInfo() {
 
   const information = profileInfo.map((info, index) => {
     return (
-      <div>
+      <div id={info.label} className="myProfileInfoText">
         {info.label}: {info.value}
       </div>
     );
@@ -55,9 +67,7 @@ export default function MyProfileInfo() {
 
   return (
     <div>
-      <form noValidate autoComplete="off" className="form">
-        {information}
-      </form>
+      <div className="myProfileInfo">{information}</div>
     </div>
   );
 }

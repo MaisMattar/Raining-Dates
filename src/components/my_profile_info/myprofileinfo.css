@@ -1,8 +1,14 @@
 /** @format */
 
-.form {
+.myProfileInfo {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.myProfileInfoText {
+  font-size: 23px;
+  margin-bottom: 10px;
 }

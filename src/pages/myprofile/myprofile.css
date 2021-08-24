@@ -2,8 +2,10 @@
 
 .myProfileContainer {
   display: flex;
-  justify-content: space-around;
-  margin-top: 30px;
+  justify-content: space-between;
+
+  margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .myProfileText {
@@ -21,7 +23,6 @@
 .myprofileRight {
   flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
 }

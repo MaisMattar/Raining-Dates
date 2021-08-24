@@ -4,22 +4,46 @@ import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useRef } from "react";
 import "./editprofile.css";
-import Topbar from "../../components/topbar/Topbar";
 import { useHistory, Link } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
+import firebase from "../../firebase";
 
 export default function EditProfile() {
   const firstnameRef = useRef(null);
   const lastnameRef = useRef(null);
-  const dateRef = useRef(null);
-  const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const educationRef = useRef(null);
   const workplaceRef = useRef(null);
   const history = useHistory();
-  const { currentUser, updateEmail, updatePassword } = useAuth();
+  const { currentUser, updatePassword } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  console.log("currentUser.email = ", currentUser.email);
+
+  const docRef = firebase
+    .firestore()
+    .collection("users")
+    .doc(currentUser.email);
+
+  docRef
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const documentData = doc.data();
+        firstnameRef.current.value = documentData.first_name;
+        lastnameRef.current.value = documentData.last_name;
+        educationRef.current.value =
+          documentData.education === undefined ? "" : documentData.education;
+        workplaceRef.current.value =
+          documentData.workplace === undefined ? "" : documentData.workplace;
+      } else {
+        console.log("No such document!");
+      }
+    })
+    .catch((error) => {
+      console.log("Error getting document:", error);
+    });
 
   const profileInfo = [
     {
@@ -27,49 +51,30 @@ export default function EditProfile() {
       label: "First Name",
       ref: firstnameRef,
       type: "text",
-      defaultValue: "",
     },
     {
       id: "lastname",
       label: "Last Name",
       ref: lastnameRef,
       type: "text",
-      defaultValue: "",
-    },
-    {
-      id: "date",
-      label: "Date of Birth",
-      ref: dateRef,
-      type: "date",
-      defaultValue: "",
-    },
-    {
-      id: "email",
-      label: "Email",
-      ref: emailRef,
-      type: "email",
-      defaultValue: currentUser.email,
     },
     {
       id: "password",
       label: "Password",
       ref: passwordRef,
       type: "password",
-      defaultValue: "",
     },
     {
       id: "education",
       label: "Education",
       ref: educationRef,
       type: "text",
-      defaultValue: "",
     },
     {
       id: "workplace",
       label: "Workplace",
       ref: workplaceRef,
       type: "text",
-      defaultValue: "",
     },
   ];
 
@@ -97,11 +102,6 @@ export default function EditProfile() {
 
     const promises = [];
 
-    if (emailRef.current.value !== currentUser.email) {
-      console.log("updatingEmail");
-      promises.push(updateEmail(emailRef.current.value));
-    }
-
     if (
       passwordRef.current.value !== "" &&
       passwordRef.current.value !== currentUser.pasword
@@ -109,21 +109,27 @@ export default function EditProfile() {
       promises.push(updatePassword(passwordRef.current.value));
     }
 
-    Promise.all(promises)
-      .then(() => {
-        history.push("/myprofile");
+    promises.push(
+      docRef.update({
+        first_name: firstnameRef.current.value,
+        last_name: lastnameRef.current.value,
+        education: educationRef.current.value,
+        workplace: workplaceRef.current.value,
       })
+    );
+
+    Promise.all(promises)
+      .then(() => {})
       .catch(() => {
         setError("Failed to update profile");
       })
       .finally(() => {
-        setLoading(false);
+        history.push("/myprofile");
       });
   }
 
   return (
     <>
-      <Topbar />
       <div className="editprofileContainer">
         <div className="editprofileLeft">
           <div className="myProfileText">Edit Your Profile</div>
