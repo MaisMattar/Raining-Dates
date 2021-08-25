@@ -19,8 +19,6 @@ export default function EditProfile() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  console.log("currentUser.email = ", currentUser.email);
-
   const docRef = firebase
     .firestore()
     .collection("users")
@@ -80,9 +78,10 @@ export default function EditProfile() {
 
   const registerInfoInputs = profileInfo.map((info, index) => {
     return (
-      <Form.Group>
+      <Form.Group id={info.id}>
         <Form.Label>{info.label}</Form.Label>
         <Form.Control
+          id={info.id}
           ref={info.ref}
           type={info.type}
           defaultValue={info.defaultValue}
@@ -138,6 +137,7 @@ export default function EditProfile() {
           <Form onSubmit={handleSubmit}>
             {registerInfoInputs}
             <Button
+              id="submitbutton"
               disabled={loading}
               type="submit"
               className="saveChangesButton"

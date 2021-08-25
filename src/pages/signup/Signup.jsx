@@ -36,10 +36,23 @@ export default function Signup() {
     );
   });
 
-  function parseDate(s) {
-    var b = s.split(/\D/);
+  function parseDate(date_of_birth) {
+    var b = date_of_birth.split(/\D/);
     return new Date(b[0], --b[1], b[2]);
   }
+
+  const checkIfLegalAge = () => {
+    const date_of_birth = parseDate(dateRef.current.value);
+    const legalDate = new Date();
+    legalDate.setFullYear(legalDate.getFullYear() - 20);
+    console.log("date_of_birth = ", date_of_birth);
+    console.log("legalDate = ", legalDate);
+    if (date_of_birth < legalDate) {
+      console.log("inside if");
+      return true;
+    }
+    return false;
+  };
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
@@ -48,9 +61,8 @@ export default function Signup() {
     setLoading(false);
   };
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
+  const createProfileFirebaseDoc = () => {
+    setError("");
     const docRef = firebase
       .firestore()
       .collection("users")
@@ -92,9 +104,10 @@ export default function Signup() {
           });
       }
     );
+  };
 
+  const handleEmailPasswordSignUp = async () => {
     try {
-      if (error !== "") throw error;
       setError("");
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
@@ -103,6 +116,34 @@ export default function Signup() {
       setLoading(false);
       return;
     }
+  };
+
+  const createInterestsFirebaseDoc = (collectionName) => {
+    firebase
+      .firestore()
+      .collection(collectionName)
+      .doc(emailRef.current.value)
+      .set({
+        profiles: [],
+      });
+  };
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!checkIfLegalAge()) {
+      setError("Failed to create an account. You must be 20 or older!");
+      return;
+    }
+
+    createProfileFirebaseDoc();
+    if (error !== "") return;
+
+    handleEmailPasswordSignUp();
+    if (error !== "") return;
+
+    createInterestsFirebaseDoc("interested");
+    createInterestsFirebaseDoc("notInterested");
   }
 
   return (

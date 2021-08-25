@@ -29,14 +29,12 @@ export default function AgeGroup(props) {
           const documentData = doc.data();
           if (documentData.email !== currentUser.email)
             people.push(documentData);
-          console.log("documentData.email = ", documentData.email);
         });
         setPeopleProfiles(people);
       });
   }, [props.ageGroup.startAge, props.ageGroup.endAge, currentUser.email]);
 
   const pictures = peopleProfiles.map((personProfile, index) => {
-    console.log("personProfile.email = ", personProfile.email);
     return (
       <li key={personProfile.email} className="peoplePictureListItem">
         <Link className="ageGroupLink" to={"/profile/" + personProfile.email}>

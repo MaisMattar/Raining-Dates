@@ -15,8 +15,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
-  console.log(currentUser ? currentUser.email : "no current user");
-
   const loginInfo = [
     { id: "email", label: "Email", type: "email", ref: emailRef },
     { id: "password", label: "Password", type: "password", ref: passwordRef },

@@ -12,7 +12,6 @@ export default function Topbar() {
   async function handleLogout() {
     try {
       await logout();
-      console.log("logged out");
       history.push("/login");
     } catch {
       console.log("Failed to logout");

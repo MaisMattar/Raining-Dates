@@ -8,12 +8,42 @@ import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import firebase from "firebase";
 import { useState, useEffect } from "react";
+import { useAuth } from "../../components/contexts/AuthContext";
+import { IfFirebaseUnAuthed } from "@react-firebase/auth";
 
 export default function Profile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [interested, setInterested] = useState(false);
+  const [notInterested, setNotInterested] = useState(false);
+  const { currentUser } = useAuth();
 
   let { email } = useParams();
+
+  const checkIfNotInterested = () => {
+    firebase
+      .firestore()
+      .collection("notInterested")
+      .doc(currentUser.email)
+      .get()
+      .then((doc) => {
+        const documentData = doc.data();
+        if (documentData.profiles.includes(email)) setNotInterested(true);
+      });
+  };
+
+  const checkIfInterested = () => {
+    firebase
+      .firestore()
+      .collection("interested")
+      .doc(currentUser.email)
+      .get()
+      .then((doc) => {
+        const documentData = doc.data();
+        if (documentData.profiles.includes(email)) setInterested(true);
+        else checkIfNotInterested();
+      });
+  };
 
   useEffect(() => {
     firebase
@@ -27,7 +57,43 @@ export default function Profile() {
         setFirstName(documentData.first_name);
         setLastName(documentData.last_name);
       });
+
+    checkIfInterested();
   }, []);
+
+  const addProfileToCollection = (collectionToAdd, collectionToRemove) => {
+    firebase
+      .firestore()
+      .collection(collectionToAdd)
+      .doc(currentUser.email)
+      .update({
+        profiles: firebase.firestore.FieldValue.arrayUnion(email),
+      });
+
+    firebase
+      .firestore()
+      .collection(collectionToRemove)
+      .doc(currentUser.email)
+      .update({
+        profiles: firebase.firestore.FieldValue.arrayRemove(email),
+      });
+  };
+
+  const handleInterested = (e) => {
+    if (!interested) {
+      setInterested(true);
+      setNotInterested(false);
+      addProfileToCollection("interested", "notInterested");
+    }
+  };
+
+  const handleNotInterested = (e) => {
+    if (!notInterested) {
+      setNotInterested(true);
+      setInterested(false);
+      addProfileToCollection("notInterested", "interested");
+    }
+  };
 
   return (
     <>
@@ -43,11 +109,20 @@ export default function Profile() {
         </div>
       </div>
       <div className="profileButtons">
-        <IconButton className="profileInterested">
-          <Favorite className="favoriteIcon" />
+        <IconButton onClick={handleInterested} className="profileInterested">
+          <Favorite
+            className={interested ? "favoriteIconClicked" : "favoriteIcon"}
+          />
         </IconButton>
-        <IconButton className="profileNotInterested">
-          <NotInterested className="notInterestedIcon" />
+        <IconButton
+          onClick={handleNotInterested}
+          className="profileNotInterested"
+        >
+          <NotInterested
+            className={
+              notInterested ? "notInterestedIconClicked" : "notInterestedIcon"
+            }
+          />
         </IconButton>
       </div>
     </>
