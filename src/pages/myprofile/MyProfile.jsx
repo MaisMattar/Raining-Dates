@@ -38,6 +38,12 @@ export default function MyProfile() {
     align-items: center;
     flex-direction: column;
   `;
+  const EditButton = styled(Button)`
+    height: 45px;
+    width: 150px;
+    border-radius: 10px;
+    margin-top: 15px;
+  `;
 
   function handleEditProfile(event) {
     history.push("/edit-profile");
@@ -52,9 +58,7 @@ export default function MyProfile() {
         </Left>
         <Right>
           <MyProfileInfo />
-          <Button className="editprofileButton" onClick={handleEditProfile}>
-            Edit Profile
-          </Button>
+          <EditButton onClick={handleEditProfile}>Edit Profile</EditButton>
         </Right>
       </Container>
     </>

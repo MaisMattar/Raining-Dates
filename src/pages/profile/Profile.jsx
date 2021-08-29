@@ -45,12 +45,22 @@ export default function Profile() {
     justify-content: center;
   `;
 
-  const ProfileIcon = styled(IconButton)`
+  const ProfileIconButton = styled(IconButton)`
     margin-right: 20px;
     width: 80px;
     height: 80px;
     border-radius: 50%;
     background-color: white;
+  `;
+
+  const FavoriteIcon = styled(Favorite)`
+    color: ${interested ? "rgb(248, 148, 164)" : "grey"};
+    transform: ${interested ? "scale(2)" : "scale(1.8)"};
+  `;
+
+  const NotInterestedIcon = styled(NotInterested)`
+    color: ${notInterested ? "blue" : "grey"};
+    transform: ${notInterested ? "scale(2)" : "scale(1.8)"};
   `;
 
   const checkIfNotInterested = () => {
@@ -130,34 +140,25 @@ export default function Profile() {
 
   return (
     <>
-      <div className="profileText">
+      <Text>
         {firstName} {lastName}'s Profile
-      </div>
-      <div className="profileContainer">
-        <div className="profileLeft">
+      </Text>
+      <Container>
+        <div css={{ flex: 1 }}>
           <ProfilePictures email={email.toString()} />
         </div>
-        <div className="profileRight">
+        <div css={{ flex: 1 }}>
           <ProfileInfo email={email.toString()} />
         </div>
-      </div>
-      <div className="profileButtons">
-        <IconButton onClick={handleInterested}>
-          <Favorite
-            className={interested ? "favoriteIconClicked" : "favoriteIcon"}
-          />
-        </IconButton>
-        <IconButton
-          onClick={handleNotInterested}
-          className="profileNotInterested"
-        >
-          <NotInterested
-            className={
-              notInterested ? "notInterestedIconClicked" : "notInterestedIcon"
-            }
-          />
-        </IconButton>
-      </div>
+      </Container>
+      <ButtonsContainer>
+        <ProfileIconButton onClick={handleInterested}>
+          <FavoriteIcon />
+        </ProfileIconButton>
+        <ProfileIconButton onClick={handleNotInterested}>
+          <NotInterestedIcon />
+        </ProfileIconButton>
+      </ButtonsContainer>
     </>
   );
 }

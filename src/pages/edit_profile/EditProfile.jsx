@@ -53,6 +53,21 @@ export default function EditProfile() {
     flex-direction: column;
   `;
 
+  const SaveButton = styled(Button)`
+    height: 45px;
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  `;
+
+  const EditAlert = styled(Alert)`
+    width: 280px;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 10px;
+  `;
+
   const profileInfo = [
     {
       id: "firstname",
@@ -170,21 +185,12 @@ export default function EditProfile() {
         <Right>
           <Form onSubmit={handleSubmit}>
             {registerInfoInputs}
-            <Button
-              id="submitbutton"
-              disabled={loading}
-              type="submit"
-              className="saveChangesButton"
-            >
+            <SaveButton id="submitbutton" disabled={loading} type="submit">
               Save Changes
-            </Button>
+            </SaveButton>
           </Form>
           <Link to="/myprofile">Cancel</Link>
-          {error && (
-            <Alert variant="danger" className="editprofileAlert">
-              {error}
-            </Alert>
-          )}
+          {error && <EditAlert variant="danger">{error}</EditAlert>}
         </Right>
       </Container>
     </>

@@ -49,6 +49,13 @@ export default function ProfilePictures() {
     cursor: pointer;
   `;
 
+  const RemoveAlert = styled(Alert)`
+    margin-top: 40px;
+    margin-left: 20px;
+    width: 320px;
+    text-align: center;
+  `;
+
   const docRef = firebase
     .firestore()
     .collection("users")
@@ -157,11 +164,7 @@ export default function ProfilePictures() {
           </AddPicture>
         </li>
       </PictureList>
-      {error && (
-        <Alert variant="danger" className="removePictureAlert">
-          {error}
-        </Alert>
-      )}
+      {error && <RemoveAlert variant="danger">{error}</RemoveAlert>}
     </div>
   );
 }

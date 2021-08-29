@@ -74,6 +74,19 @@ export default function Login() {
     font-size: 17px;
   `;
 
+  const LoginButton = styled(Button)`
+    height: 45px;
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 15px;
+  `;
+
+  const LoginAlert = styled(Alert)`
+    width: 370px;
+    text-align: center;
+    font-size: 18px;
+  `;
+
   const loginInfo = [
     { id: "email", label: "Email", type: "email", ref: emailRef },
     { id: "password", label: "Password", type: "password", ref: passwordRef },
@@ -113,17 +126,13 @@ export default function Login() {
           <Description>Find your next date</Description>
         </Part>
         <Part>
-          {error && (
-            <Alert variant="danger" className="loginAlert">
-              {error}
-            </Alert>
-          )}
+          {error && <LoginAlert variant="danger">{error}</LoginAlert>}
           <Box>
             <Form onSubmit={handleSubmit}>
               {loginInfoInputs}
-              <Button disabled={loading} type="submit" className="loginButton">
+              <LoginButton disabled={loading} type="submit">
                 Log In
-              </Button>
+              </LoginButton>
             </Form>
             <div css={{ textAlign: "center" }}>
               Don't have an account? <Link to="/signup">Sign Up</Link>
