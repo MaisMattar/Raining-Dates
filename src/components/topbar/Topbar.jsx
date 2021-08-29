@@ -1,11 +1,14 @@
-/** @format */
+/**
+ * @format
+ * @jsxImportSource @emotion/react
+ */
 
 import "./topbar.css";
 import { AccountBox, Chat, ExitToApp } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+import { css, jsx } from "@emotion/react";
 
 export default function Topbar() {
   const { currentUser, logout } = useAuth();
@@ -37,32 +40,47 @@ export default function Topbar() {
     cursor: pointer;
   `;
 
+  const Right = styled.div`
+    flex: 2;
+    color: white;
+  `;
+
+  const Icons = styled.div`
+    display: flex;
+    justify-content: flex-end;
+  `;
+
+  const IconItem = styled.div`
+    margin-right: 15px;
+    cursor: pointer;
+  `;
+
   return (
     <Container>
       <div css={{ flex: 5 }}>
-        <Link className="topbarHomeLink" to="/">
-          <span className="logo">Raining Dates</span>
+        <Link css={{ textDecoration: "none" }} to="/">
+          <Logo>Raining Dates</Logo>
         </Link>
       </div>
-      <div className="topbarRight">
+      <Right>
         {currentUser && (
-          <div className="topbarIcons">
-            <div className="topbarIconItem">
-              <Link className="topbarIconLink" to="/myprofile">
+          <Icons>
+            <IconItem>
+              <Link css={{ color: "white" }} to="/myprofile">
                 <AccountBox />
               </Link>
-            </div>
-            <div className="topbarIconItem">
+            </IconItem>
+            <IconItem>
               <Chat />
-            </div>
-            <div className="topbarIconItem">
-              <Link className="topbarIconLink" to="/login">
+            </IconItem>
+            <IconItem>
+              <Link css={{ color: "white" }} to="/login">
                 <ExitToApp onClick={handleLogout} />
               </Link>
-            </div>
-          </div>
+            </IconItem>
+          </Icons>
         )}
-      </div>
+      </Right>
     </Container>
   );
 }
