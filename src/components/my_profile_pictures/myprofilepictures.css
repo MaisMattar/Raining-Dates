@@ -1,6 +1,6 @@
 /** @format */
 
-.myPictureList {
+/* .myPictureList {
   list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -34,7 +34,7 @@
   top: 16px;
   right: 10px;
   cursor: pointer;
-}
+}*/
 
 input[type="file"] {
   visibility: hidden;

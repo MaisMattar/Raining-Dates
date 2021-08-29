@@ -4,6 +4,7 @@ import "./myprofileinfo.css";
 import firebase from "../../firebase";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import styled from "@emotion/styled";
 
 export default function MyProfileInfo() {
   const { currentUser } = useAuth();
@@ -12,6 +13,19 @@ export default function MyProfileInfo() {
   const [date, setDate] = useState(null);
   const [education, setEducation] = useState("");
   const [workplace, setWorkplace] = useState("");
+
+  const ProfileText = styled.div`
+    font-size: 23px;
+    margin-bottom: 10px;
+  `;
+
+  const ProfileInfo = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+  `;
 
   const dateToString = (date) => {
     let day = date.getDate();
@@ -59,15 +73,15 @@ export default function MyProfileInfo() {
 
   const information = profileInfo.map((info, index) => {
     return (
-      <div id={info.label} className="myProfileInfoText">
+      <ProfileText id={info.label}>
         {info.label}: {info.value}
-      </div>
+      </ProfileText>
     );
   });
 
   return (
     <div>
-      <div className="myProfileInfo">{information}</div>
+      <ProfileInfo>{information}</ProfileInfo>
     </div>
   );
 }
