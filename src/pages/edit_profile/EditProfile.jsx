@@ -7,6 +7,7 @@ import "./editprofile.css";
 import { useHistory, Link } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
 import firebase from "../../firebase";
+import styled from "@emotion/styled";
 
 export default function EditProfile() {
   const firstnameRef = useRef(null);
@@ -19,29 +20,53 @@ export default function EditProfile() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const docRef = firebase
-    .firestore()
-    .collection("users")
-    .doc(currentUser.email);
+  const Container = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+  `;
 
-  docRef
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        const documentData = doc.data();
-        firstnameRef.current.value = documentData.first_name;
-        lastnameRef.current.value = documentData.last_name;
-        educationRef.current.value =
-          documentData.education === undefined ? "" : documentData.education;
-        workplaceRef.current.value =
-          documentData.workplace === undefined ? "" : documentData.workplace;
-      } else {
-        console.log("No such document!");
-      }
-    })
-    .catch((error) => {
-      console.log("Error getting document:", error);
-    });
+  const Left = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 2;
+  `;
+
+  const MainText = styled.div`
+    text-align: center;
+    margin-top: 30px;
+    font-size: 30px;
+    color: rgb(62, 121, 170);
+    font-weight: bold;
+  `;
+
+  const Right = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 3;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    flex-direction: column;
+  `;
+
+  const SaveButton = styled(Button)`
+    height: 45px;
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  `;
+
+  const EditAlert = styled(Alert)`
+    width: 280px;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 10px;
+  `;
 
   const profileInfo = [
     {
@@ -75,6 +100,30 @@ export default function EditProfile() {
       type: "text",
     },
   ];
+
+  const docRef = firebase
+    .firestore()
+    .collection("users")
+    .doc(currentUser.email);
+
+  docRef
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const documentData = doc.data();
+        firstnameRef.current.value = documentData.first_name;
+        lastnameRef.current.value = documentData.last_name;
+        educationRef.current.value =
+          documentData.education === undefined ? "" : documentData.education;
+        workplaceRef.current.value =
+          documentData.workplace === undefined ? "" : documentData.workplace;
+      } else {
+        console.log("No such document!");
+      }
+    })
+    .catch((error) => {
+      console.log("Error getting document:", error);
+    });
 
   const registerInfoInputs = profileInfo.map((info, index) => {
     return (
@@ -129,30 +178,21 @@ export default function EditProfile() {
 
   return (
     <>
-      <div className="editprofileContainer">
-        <div className="editprofileLeft">
-          <div className="myProfileText">Edit Your Profile</div>
-        </div>
-        <div className="editprofileRight">
+      <Container>
+        <Left>
+          <MainText>Edit Your Profile</MainText>
+        </Left>
+        <Right>
           <Form onSubmit={handleSubmit}>
             {registerInfoInputs}
-            <Button
-              id="submitbutton"
-              disabled={loading}
-              type="submit"
-              className="saveChangesButton"
-            >
+            <SaveButton id="submitbutton" disabled={loading} type="submit">
               Save Changes
-            </Button>
+            </SaveButton>
           </Form>
           <Link to="/myprofile">Cancel</Link>
-          {error && (
-            <Alert variant="danger" className="editprofileAlert">
-              {error}
-            </Alert>
-          )}
-        </div>
-      </div>
+          {error && <EditAlert variant="danger">{error}</EditAlert>}
+        </Right>
+      </Container>
     </>
   );
 }

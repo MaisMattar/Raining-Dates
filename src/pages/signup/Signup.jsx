@@ -1,4 +1,7 @@
-/** @format */
+/**
+ * @format
+ * @jsxImportSource @emotion/react
+ */
 
 import "./signup.css";
 import { Button, Form, Alert } from "react-bootstrap";
@@ -6,6 +9,7 @@ import { useRef, useState } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import firebase, { storage } from "../../firebase";
+import styled from "@emotion/styled";
 
 export default function Signup() {
   const firstnameRef = useRef(null);
@@ -18,6 +22,90 @@ export default function Signup() {
   const [loading, setLoading] = useState(true);
   const [image, setImage] = useState(null);
   const history = useHistory();
+
+  const Container = styled.div`
+    position: absolute;
+    top: auto;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://www.juneauempire.com/wp-content/uploads/2018/11/6044053_web1_rodion-kutsaev-760882-unsplash.jpg");
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  `;
+
+  const Wrapper = styled.div`
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  `;
+
+  const Part = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  `;
+
+  const Logo = styled.h3`
+    font-size: 50px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px black;
+  `;
+
+  const Description = styled.span`
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px black;
+  `;
+
+  const Box = styled.div`
+    height: 500px;
+    width: 370px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.664);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 17px;
+  `;
+
+  const SignUpButton = styled(Button)`
+    height: 45px;
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 15px;
+  `;
+
+  const SignUpAlert = styled(Alert)`
+    width: 370px;
+    text-align: center;
+    font-size: 18px;
+  `;
+
+  const UploadButton = styled.div`
+    height: 35px;
+    width: 150px;
+    background-color: royalblue;
+    border-radius: 3px;
+    margin-top: 10px;
+    cursor: pointer;
+  `;
+
+  const UploadText = styled.div`
+    font-size: 17px;
+    text-align: center;
+    color: white;
+    padding: 5px 0;
+  `;
 
   const registerInfo = [
     { id: "firstname", label: "First Name", type: "text", ref: firstnameRef },
@@ -147,39 +235,35 @@ export default function Signup() {
   }
 
   return (
-    <div className="signup">
-      <div className="signupWrapper">
-        <div className="signupLeft">
-          <h3 className="signupLogo">Raining Dates</h3>
-          <span className="signupDesc">Find your next date</span>
-        </div>
-        <div className="signupRight">
-          {error && (
-            <Alert variant="danger" className="signupAlert">
-              {error}
-            </Alert>
-          )}
-          <div className="signupBox">
+    <Container>
+      <Wrapper>
+        <Part>
+          <Logo>Raining Dates</Logo>
+          <Description>Find your next date</Description>
+        </Part>
+        <Part>
+          {error && <SignUpAlert variant="danger">{error}</SignUpAlert>}
+          <Box>
             <Form onSubmit={handleSubmit}>
               {registerInfoInputs}
               <div>
                 <label htmlFor="single">
-                  <div className="uploadImageButton">
-                    <div className="uploadImageText">Upload Image</div>
-                  </div>
+                  <UploadButton>
+                    <UploadText>Upload Image</UploadText>
+                  </UploadButton>
                 </label>
                 <input type="file" id="single" onChange={handleChange} />
               </div>
-              <Button disabled={loading} type="submit" className="signupButton">
+              <SignUpButton disabled={loading} type="submit">
                 Sign Up
-              </Button>
+              </SignUpButton>
             </Form>
-            <div className="loginText">
+            <div css={{ textAlign: "center" }}>
               Already have an account? <Link to="/login">Log In</Link>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </Part>
+      </Wrapper>
+    </Container>
   );
 }

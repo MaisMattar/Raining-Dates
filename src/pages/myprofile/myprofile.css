@@ -1,9 +1,8 @@
 /** @format */
 
-.myProfileContainer {
+/* .myProfileContainer {
   display: flex;
   justify-content: space-between;
-
   margin-top: 20px;
   flex-wrap: wrap;
 }
@@ -25,7 +24,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-}
+} 
 
 .editprofileButton {
   height: 45px;
@@ -33,3 +32,4 @@
   border-radius: 10px;
   margin-top: 15px;
 }
+*/

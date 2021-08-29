@@ -1,4 +1,7 @@
-/** @format */
+/**
+ * @format
+ * @jsxImportSource @emotion/react
+ */
 
 import ProfilePictures from "../../components/profile_pictures/ProfilePictures";
 import ProfileInfo from "../../components/profile_info/ProfileInfo";
@@ -9,7 +12,7 @@ import { useParams } from "react-router-dom";
 import firebase from "firebase";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
-import { IfFirebaseUnAuthed } from "@react-firebase/auth";
+import styled from "@emotion/styled";
 
 export default function Profile() {
   const [firstName, setFirstName] = useState("");
@@ -19,6 +22,46 @@ export default function Profile() {
   const { currentUser } = useAuth();
 
   let { email } = useParams();
+
+  const Container = styled.div`
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    margin-left: 30px;
+  `;
+
+  const Text = styled.div`
+    text-align: center;
+    margin-top: 30px;
+    font-size: 30px;
+    color: rgb(62, 121, 170);
+    font-weight: bold;
+  `;
+
+  const ButtonsContainer = styled.div`
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+  `;
+
+  const ProfileIconButton = styled(IconButton)`
+    margin-right: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: white;
+  `;
+
+  const FavoriteIcon = styled(Favorite)`
+    color: ${interested ? "rgb(248, 148, 164)" : "grey"};
+    transform: ${interested ? "scale(2)" : "scale(1.8)"};
+  `;
+
+  const NotInterestedIcon = styled(NotInterested)`
+    color: ${notInterested ? "blue" : "grey"};
+    transform: ${notInterested ? "scale(2)" : "scale(1.8)"};
+  `;
 
   const checkIfNotInterested = () => {
     firebase
@@ -97,34 +140,25 @@ export default function Profile() {
 
   return (
     <>
-      <div className="profileText">
+      <Text>
         {firstName} {lastName}'s Profile
-      </div>
-      <div className="profileContainer">
-        <div className="profileLeft">
+      </Text>
+      <Container>
+        <div css={{ flex: 1 }}>
           <ProfilePictures email={email.toString()} />
         </div>
-        <div className="profileRight">
+        <div css={{ flex: 1 }}>
           <ProfileInfo email={email.toString()} />
         </div>
-      </div>
-      <div className="profileButtons">
-        <IconButton onClick={handleInterested} className="profileInterested">
-          <Favorite
-            className={interested ? "favoriteIconClicked" : "favoriteIcon"}
-          />
-        </IconButton>
-        <IconButton
-          onClick={handleNotInterested}
-          className="profileNotInterested"
-        >
-          <NotInterested
-            className={
-              notInterested ? "notInterestedIconClicked" : "notInterestedIcon"
-            }
-          />
-        </IconButton>
-      </div>
+      </Container>
+      <ButtonsContainer>
+        <ProfileIconButton onClick={handleInterested}>
+          <FavoriteIcon />
+        </ProfileIconButton>
+        <ProfileIconButton onClick={handleNotInterested}>
+          <NotInterestedIcon />
+        </ProfileIconButton>
+      </ButtonsContainer>
     </>
   );
 }

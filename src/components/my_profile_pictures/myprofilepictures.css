@@ -1,6 +1,6 @@
 /** @format */
 
-.myPictureList {
+/* .myPictureList {
   list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -36,14 +36,14 @@
   cursor: pointer;
 }
 
-input[type="file"] {
-  visibility: hidden;
-  position: absolute;
-}
-
 .removePictureAlert {
   margin-top: 40px;
   margin-left: 20px;
   width: 320px;
   text-align: center;
+}*/
+
+input[type="file"] {
+  visibility: hidden;
+  position: absolute;
 }
