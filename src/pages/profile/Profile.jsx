@@ -130,17 +130,17 @@ export default function Profile() {
 
   return (
     <>
-      <Text>
+      <div className="profileText">
         {firstName} {lastName}'s Profile
-      </Text>
-      <Container>
-        <div css={{ flex: 1 }}>
+      </div>
+      <div className="profileContainer">
+        <div className="profileLeft">
           <ProfilePictures email={email.toString()} />
         </div>
-        <div css={{ flex: 1 }}>
+        <div className="profileRight">
           <ProfileInfo email={email.toString()} />
         </div>
-      </Container>
+      </div>
       <div className="profileButtons">
         <IconButton onClick={handleInterested}>
           <Favorite
