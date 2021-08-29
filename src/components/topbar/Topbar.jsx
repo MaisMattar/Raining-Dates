@@ -4,6 +4,8 @@ import "./topbar.css";
 import { AccountBox, Chat, ExitToApp } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
+import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 export default function Topbar() {
   const { currentUser, logout } = useAuth();
@@ -17,9 +19,27 @@ export default function Topbar() {
       console.log("Failed to logout");
     }
   }
+
+  const Container = styled.div`
+    height: 70px;
+    width: 100%;
+    background-color: rgb(62, 121, 170);
+    display: flex;
+    align-items: center;
+    position: sticky;
+  `;
+
+  const Logo = styled.span`
+    font-size: 30px;
+    margin-left: 20px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+  `;
+
   return (
-    <div className="topbarContainer">
-      <div className="topbarLeft">
+    <Container>
+      <div css={{ flex: 5 }}>
         <Link className="topbarHomeLink" to="/">
           <span className="logo">Raining Dates</span>
         </Link>
@@ -43,6 +63,6 @@ export default function Topbar() {
           </div>
         )}
       </div>
-    </div>
+    </Container>
   );
 }
