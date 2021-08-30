@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useRef } from "react";
-import "./editprofile.css";
 import { useHistory, Link } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
 import firebase from "../../firebase";

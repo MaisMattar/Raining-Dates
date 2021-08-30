@@ -1,18 +1,27 @@
 /**
  * @format
- * @jsxImportSource @emotion/react
  */
 
-import "./agegroup.css";
 import { Link } from "react-router-dom";
 import firebase from "firebase";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 
-export default function AgeGroup(props) {
-  const [peopleProfiles, setPeopleProfiles] = useState([]);
+interface Group {
+  text: string;
+  startAge: number;
+  endAge: number;
+}
+
+interface Props {
+  ageGroup: Group;
+}
+
+export default function AgeGroup(props: Props) {
+  const [peopleProfiles, setPeopleProfiles] = useState<
+    Array<firebase.firestore.DocumentData>
+  >([]);
   const { currentUser } = useAuth();
 
   const AgeGroupText = styled.div`
@@ -42,6 +51,11 @@ export default function AgeGroup(props) {
     object-fit: cover;
   `;
 
+  const ListItem = styled.li`
+    position: relative;
+    margin-top: 30px;
+  `;
+
   const getDateInTimestamp = (age) => {
     const date = new Date();
     date.setFullYear(date.getFullYear() - age);
@@ -56,7 +70,7 @@ export default function AgeGroup(props) {
       .where("date_of_birth", ">=", getDateInTimestamp(props.ageGroup.endAge))
       .get()
       .then((querySnapshot) => {
-        const people = [];
+        const people = Array<firebase.firestore.DocumentData>([]);
         querySnapshot.forEach((doc) => {
           const documentData = doc.data();
           if (documentData.email !== currentUser.email)
@@ -68,20 +82,14 @@ export default function AgeGroup(props) {
 
   const pictures = peopleProfiles.map((personProfile, index) => {
     return (
-      <li
-        key={personProfile.email}
-        css={css`
-          position: relative;
-          margin-top: 30px;
-        `}
-      >
+      <ListItem key={personProfile.email}>
         <Link to={"/profile/" + personProfile.email}>
           <PeoplePicture
             src={personProfile.images[0]}
-            alt={index}
+            alt={personProfile.images[0]}
           ></PeoplePicture>
         </Link>
-      </li>
+      </ListItem>
     );
   });
 

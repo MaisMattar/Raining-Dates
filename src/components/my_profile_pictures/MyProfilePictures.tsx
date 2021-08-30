@@ -1,21 +1,19 @@
 /**
  * @format
- * * @jsxImportSource @emotion/react
  */
 
 import "./myprofilepictures.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import firebase, { storage } from "../../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import { Cancel, Image } from "@material-ui/icons";
 import { Alert } from "react-bootstrap";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 
 export default function ProfilePictures() {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [profilePictures, setProfilePictures] = useState([]);
+  const [profilePictures, setProfilePictures] = useState<Array<string>>([]);
   const [error, setError] = useState("");
 
   const PictureList = styled.ul`
@@ -56,6 +54,11 @@ export default function ProfilePictures() {
     text-align: center;
   `;
 
+  const AddPictureImage = styled(Image)`
+    transform: scale(3);
+    cursor: pointer;
+  `;
+
   const docRef = firebase
     .firestore()
     .collection("users")
@@ -67,7 +70,7 @@ export default function ProfilePictures() {
       .then((doc) => {
         if (doc.exists) {
           const documentData = doc.data();
-          setProfilePictures(documentData.images);
+          setProfilePictures(documentData!.images);
         } else {
           console.log("No such document!");
         }
@@ -77,7 +80,7 @@ export default function ProfilePictures() {
       });
   }, []);
 
-  function removeImage(imageIndex) {
+  function removeImage(imageIndex: number) {
     if (profilePictures.length <= 1) {
       setError("You must have at least one photo!");
       setTimeout(function () {
@@ -94,8 +97,8 @@ export default function ProfilePictures() {
       .then(() => setProfilePictures(profilePicsCopy));
   }
 
-  const handleImageUpload = (e) => {
-    if (!e.target.files[0]) {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files === null || e.target.files[0] === null) {
       return;
     }
     const currImage = e.target.files[0];
@@ -136,7 +139,7 @@ export default function ProfilePictures() {
         <DeleteButton onClick={() => removeImage(index)}>
           <Cancel />
         </DeleteButton>
-        <Picture src={picture} alt={index}></Picture>
+        <Picture src={picture} alt={picture}></Picture>
       </li>
     );
   });
@@ -145,15 +148,10 @@ export default function ProfilePictures() {
     <div>
       <PictureList>
         {pictures}
-        <li key={profilePictures.size}>
+        <li key={profilePictures.length}>
           <AddPicture>
             <label htmlFor="single">
-              <Image
-                css={css`
-                  transform: scale(3);
-                  cursor: pointer;
-                `}
-              />
+              <AddPictureImage />
             </label>
             <input
               disabled={loading}

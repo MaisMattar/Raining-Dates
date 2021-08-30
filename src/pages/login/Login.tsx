@@ -1,9 +1,7 @@
 /**
  * @format
- * @jsxImportSource @emotion/react
  */
 
-import "./login.css";
 import { Button, Form, Alert } from "react-bootstrap";
 import { useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
@@ -87,6 +85,10 @@ export default function Login() {
     font-size: 18px;
   `;
 
+  const CenteredText = styled.div`
+    textalign: "center";
+  `;
+
   const loginInfo = [
     { id: "email", label: "Email", type: "email", ref: emailRef },
     { id: "password", label: "Password", type: "password", ref: passwordRef },
@@ -134,9 +136,9 @@ export default function Login() {
                 Log In
               </LoginButton>
             </Form>
-            <div css={{ textAlign: "center" }}>
+            <CenteredText>
               Don't have an account? <Link to="/signup">Sign Up</Link>
-            </div>
+            </CenteredText>
           </Box>
         </Part>
       </Wrapper>

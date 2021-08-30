@@ -1,11 +1,14 @@
 /** @format */
 
-import "./profileinfo.css";
 import { useState, useEffect } from "react";
 import firebase from "firebase";
 import styled from "@emotion/styled";
 
-export default function ProfileInfo(props) {
+interface IProps {
+  email: string;
+}
+
+export default function ProfileInfo(props: IProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [date, setDate] = useState("");
@@ -25,13 +28,15 @@ export default function ProfileInfo(props) {
     margin-bottom: 10px;
   `;
 
-  const dateToString = (date) => {
-    let day = date.getDate();
-    day = day < 10 ? "0" + day : day;
-    let month = date.getMonth() + 1;
-    month = month < 10 ? "0" + month : month;
+  const dateToString = (date: Date) => {
+    const day = date.getDate();
+    const dayString = day < 10 ? "0" + day : day;
+    const month = date.getMonth() + 1;
+    const monthString = month < 10 ? "0" + month : month;
+
     const year = date.getFullYear();
-    return day + "/" + month + "/" + year;
+
+    return dayString + "/" + monthString + "/" + year;
   };
 
   useEffect(() => {
@@ -42,12 +47,12 @@ export default function ProfileInfo(props) {
       .get()
       .then((doc) => {
         const documentData = doc.data();
-        const date = documentData.date_of_birth.toDate();
-        setFirstName(documentData.first_name);
-        setLastName(documentData.last_name);
+        const date = documentData!.date_of_birth.toDate();
+        setFirstName(documentData!.first_name);
+        setLastName(documentData!.last_name);
         setDate(dateToString(date));
-        setEducation(documentData.education);
-        setWorkplace(documentData.workplace);
+        setEducation(documentData!.education);
+        setWorkplace(documentData!.workplace);
       });
   }, [props.email]);
 

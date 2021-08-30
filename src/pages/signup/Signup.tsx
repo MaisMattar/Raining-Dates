@@ -1,9 +1,7 @@
 /**
  * @format
- * @jsxImportSource @emotion/react
  */
 
-import "./signup.css";
 import { Button, Form, Alert } from "react-bootstrap";
 import { useRef, useState } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
@@ -105,6 +103,10 @@ export default function Signup() {
     text-align: center;
     color: white;
     padding: 5px 0;
+  `;
+
+  const CenteredText = styled.div`
+    textalign: "center";
   `;
 
   const registerInfo = [
@@ -258,9 +260,9 @@ export default function Signup() {
                 Sign Up
               </SignUpButton>
             </Form>
-            <div css={{ textAlign: "center" }}>
+            <CenteredText>
               Already have an account? <Link to="/login">Log In</Link>
-            </div>
+            </CenteredText>
           </Box>
         </Part>
       </Wrapper>

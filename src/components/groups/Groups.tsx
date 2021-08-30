@@ -1,14 +1,19 @@
-/**
- * @format
- * @jsxImportSource @emotion/react
- */
+/** @format */
 
-import "./groups.css";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 
-export default function Groups(props) {
+interface Group {
+  text: string;
+  startAge: number;
+  endAge: number;
+}
+
+interface IProps {
+  ageGroups: Array<Group>;
+}
+
+export default function Groups({ ageGroups }: IProps) {
   const ListItem = styled.li`
     display: flex;
     justify-content: center;
@@ -31,27 +36,23 @@ export default function Groups(props) {
     max-width: 960px;
   `;
 
-  const groups = props.ageGroups.map((group, index) => {
+  const GroupLink = styled(Link)`
+    text-ecoration: none;
+    width: 250px;
+  `;
+
+  const Text = styled.div`
+    font-size: 40px;
+    color: white;
+  `;
+
+  const groups = ageGroups.map((group: Group, index: number) => {
     return (
-      <Link
-        key={group.text}
-        css={css`
-          text-decoration: none;
-          width: 250px;
-        `}
-        to={`/${group.text}`}
-      >
+      <GroupLink key={group.text} to={`/${group.text}`}>
         <ListItem>
-          <div
-            css={css`
-              font-size: 40px;
-              color: white;
-            `}
-          >
-            {group.text}
-          </div>
+          <Text>{group.text}</Text>
         </ListItem>
-      </Link>
+      </GroupLink>
     );
   });
 

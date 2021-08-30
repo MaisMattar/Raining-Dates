@@ -1,10 +1,19 @@
 /** @format */
 
 import Groups from "../../components/groups/Groups";
-import "./home.css";
 import styled from "@emotion/styled";
 
-export default function Home(props) {
+interface Group {
+  text: string;
+  startAge: number;
+  endAge: number;
+}
+
+interface IProps {
+  ageGroups: Array<Group>;
+}
+
+export default function Home(props: IProps) {
   const HomeText = styled.div`
     text-align: center;
     margin-top: 30px;

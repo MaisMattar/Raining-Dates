@@ -1,11 +1,14 @@
 /** @format */
 
-import "./profilepictures.css";
 import firebase from "firebase";
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 
-export default function ProfilePictures(props) {
+interface IProps {
+  email: string;
+}
+
+export default function ProfilePictures(props: IProps) {
   const [profilePictures, setProfilePictures] = useState([]);
 
   const PictureList = styled.ul`
@@ -32,7 +35,7 @@ export default function ProfilePictures(props) {
       .then((doc) => {
         if (doc.exists) {
           const documentData = doc.data();
-          setProfilePictures(documentData.images);
+          setProfilePictures(documentData!.images);
         } else {
           console.log("No such document!");
         }
@@ -45,7 +48,7 @@ export default function ProfilePictures(props) {
   const pictures = profilePictures.map((picture, index) => {
     return (
       <li key={index}>
-        <Picture src={picture} alt={index}></Picture>
+        <Picture src={picture} alt={picture}></Picture>
       </li>
     );
   });

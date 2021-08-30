@@ -1,6 +1,5 @@
 /** @format */
 
-import "./myprofileinfo.css";
 import firebase from "../../firebase";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
@@ -10,7 +9,7 @@ export default function MyProfileInfo() {
   const { currentUser } = useAuth();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState("");
   const [education, setEducation] = useState("");
   const [workplace, setWorkplace] = useState("");
 
@@ -27,15 +26,15 @@ export default function MyProfileInfo() {
     flex-wrap: wrap;
   `;
 
-  const dateToString = (date) => {
-    let day = date.getDate();
-    day = day < 10 ? "0" + day : day;
-    let month = date.getMonth() + 1;
-    month = month < 10 ? "0" + month : month;
+  const dateToString = (date: Date) => {
+    const day = date.getDate();
+    const dayString = day < 10 ? "0" + day : day;
+    const month = date.getMonth() + 1;
+    const monthString = month < 10 ? "0" + month : month;
 
     const year = date.getFullYear();
 
-    return day + "/" + month + "/" + year;
+    return dayString + "/" + monthString + "/" + year;
   };
 
   const docRef = firebase
@@ -48,12 +47,12 @@ export default function MyProfileInfo() {
     .then((doc) => {
       if (doc.exists) {
         const documentData = doc.data();
-        const date = documentData.date_of_birth.toDate();
-        setFirstName(documentData.first_name);
-        setLastName(documentData.last_name);
+        const date = documentData!.date_of_birth.toDate();
+        setFirstName(documentData!.first_name);
+        setLastName(documentData!.last_name);
         setDate(dateToString(date));
-        setEducation(documentData.education);
-        setWorkplace(documentData.workplace);
+        setEducation(documentData!.education);
+        setWorkplace(documentData!.workplace);
       } else {
         console.log("No such document!");
       }

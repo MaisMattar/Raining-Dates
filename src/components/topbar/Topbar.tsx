@@ -1,9 +1,7 @@
 /**
  * @format
- * @jsxImportSource @emotion/react
  */
 
-import "./topbar.css";
 import { AccountBox, Chat, ExitToApp } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
@@ -54,28 +52,40 @@ export default function Topbar() {
     cursor: pointer;
   `;
 
+  const HomeLink = styled(Link)`
+    text-decoration: none;
+  `;
+
+  const Left = styled.div`
+    flex: 5;
+  `;
+
+  const IconLink = styled(Link)`
+    color: "white";
+  `;
+
   return (
     <Container>
-      <div css={{ flex: 5 }}>
-        <Link css={{ textDecoration: "none" }} to="/">
+      <Left>
+        <HomeLink to="/">
           <Logo>Raining Dates</Logo>
-        </Link>
-      </div>
+        </HomeLink>
+      </Left>
       <Right>
         {currentUser && (
           <Icons>
             <IconItem>
-              <Link css={{ color: "white" }} to="/myprofile">
+              <IconLink to="/myprofile">
                 <AccountBox />
-              </Link>
+              </IconLink>
             </IconItem>
             <IconItem>
               <Chat />
             </IconItem>
             <IconItem>
-              <Link css={{ color: "white" }} to="/login">
+              <IconLink to="/login">
                 <ExitToApp onClick={handleLogout} />
-              </Link>
+              </IconLink>
             </IconItem>
           </Icons>
         )}

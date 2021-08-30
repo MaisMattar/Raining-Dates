@@ -1,12 +1,10 @@
 /**
  * @format
- * @jsxImportSource @emotion/react
  */
 
 import { Button } from "react-bootstrap";
 import MyProfileInfo from "../../components/my_profile_info/MyProfileInfo";
 import MyProfilePictures from "../../components/my_profile_pictures/MyProfilePictures";
-import "./myprofile.css";
 import { useHistory } from "react-router-dom";
 import styled from "@emotion/styled";
 

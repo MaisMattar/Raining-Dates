@@ -1,11 +1,9 @@
 /**
  * @format
- * @jsxImportSource @emotion/react
  */
 
 import ProfilePictures from "../../components/profile_pictures/ProfilePictures";
 import ProfileInfo from "../../components/profile_info/ProfileInfo";
-import "./profile.css";
 import { Favorite, NotInterested } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
@@ -29,6 +27,10 @@ export default function Profile() {
     margin-top: 20px;
     flex-wrap: wrap;
     margin-left: 30px;
+  `;
+
+  const Part = styled.div`
+    flex: 1;
   `;
 
   const Text = styled.div`
@@ -144,12 +146,12 @@ export default function Profile() {
         {firstName} {lastName}'s Profile
       </Text>
       <Container>
-        <div css={{ flex: 1 }}>
+        <Part>
           <ProfilePictures email={email.toString()} />
-        </div>
-        <div css={{ flex: 1 }}>
+        </Part>
+        <Part>
           <ProfileInfo email={email.toString()} />
-        </div>
+        </Part>
       </Container>
       <ButtonsContainer>
         <ProfileIconButton onClick={handleInterested}>
