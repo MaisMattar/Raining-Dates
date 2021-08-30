@@ -56,7 +56,7 @@ export default function AgeGroup(props: Props) {
     margin-top: 30px;
   `;
 
-  const getDateInTimestamp = (age) => {
+  const getDateInTimestamp = (age: number) => {
     const date = new Date();
     date.setFullYear(date.getFullYear() - age);
     return firebase.firestore.Timestamp.fromDate(date);
