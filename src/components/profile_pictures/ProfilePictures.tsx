@@ -1,14 +1,16 @@
 /** @format */
 
 import firebase from "firebase";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FunctionComponent } from "react";
 import styled from "@emotion/styled";
 
-interface IProps {
+interface ProfilePicturesProps {
   email: string;
 }
 
-export default function ProfilePictures(props: IProps) {
+export const ProfilePictures: FunctionComponent<ProfilePicturesProps> = (
+  props
+) => {
   const [profilePictures, setProfilePictures] = useState([]);
 
   const PictureList = styled.ul`
@@ -58,4 +60,4 @@ export default function ProfilePictures(props: IProps) {
       <PictureList>{pictures}</PictureList>
     </div>
   );
-}
+};

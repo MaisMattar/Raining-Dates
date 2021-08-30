@@ -2,6 +2,7 @@
 
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
+import { FunctionComponent } from "react";
 
 interface Group {
   text: string;
@@ -9,11 +10,11 @@ interface Group {
   endAge: number;
 }
 
-interface IProps {
+interface GroupsProps {
   ageGroups: Array<Group>;
 }
 
-export default function Groups({ ageGroups }: IProps) {
+export const Groups: FunctionComponent<GroupsProps> = ({ ageGroups }) => {
   const ListItem = styled.li`
     display: flex;
     justify-content: center;
@@ -57,4 +58,4 @@ export default function Groups({ ageGroups }: IProps) {
   });
 
   return <List>{groups}</List>;
-}
+};

@@ -2,17 +2,17 @@
  * @format
  */
 
-import ProfilePictures from "../../components/profile_pictures/ProfilePictures";
-import ProfileInfo from "../../components/profile_info/ProfileInfo";
+import { ProfilePictures } from "../../components/profile_pictures/ProfilePictures";
+import { ProfileInfo } from "../../components/profile_info/ProfileInfo";
 import { Favorite, NotInterested } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import firebase from "firebase";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FunctionComponent } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
 
-export default function Profile() {
+export const Profile: FunctionComponent = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [interested, setInterested] = useState(false);
@@ -163,4 +163,4 @@ export default function Profile() {
       </ButtonsContainer>
     </>
   );
-}
+};

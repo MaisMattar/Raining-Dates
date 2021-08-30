@@ -2,17 +2,18 @@
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./components/contexts/AuthContext";
-import Home from "./pages/home/Home";
-import Login from "./pages/login/Login";
-import MyProfile from "./pages/myprofile/MyProfile";
-import Signup from "./pages/signup/Signup";
-import Profile from "./pages/profile/Profile";
-import AgeGroup from "./pages/agegroup/AgeGroup";
-import PrivateRoute from "./components/PrivateRoute";
-import EditProfile from "./pages/edit_profile/EditProfile";
-import Topbar from "./components/topbar/Topbar";
+import { Home } from "./pages/home/Home";
+import { Login } from "./pages/login/Login";
+import { MyProfile } from "./pages/myprofile/MyProfile";
+import { Signup } from "./pages/signup/Signup";
+import { Profile } from "./pages/profile/Profile";
+import { AgeGroup } from "./pages/agegroup/AgeGroup";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { EditProfile } from "./pages/edit_profile/EditProfile";
+import { Topbar } from "./components/topbar/Topbar";
+import { FunctionComponent } from "react";
 
-function App() {
+export const App: FunctionComponent = () => {
   const ageGroups = [
     { text: "20-30", startAge: 20, endAge: 30 },
     { text: "30-40", startAge: 30, endAge: 40 },
@@ -71,6 +72,4 @@ function App() {
       </AuthProvider>
     </>
   );
-}
-
-export default App;
+};

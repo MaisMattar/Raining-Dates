@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import firebase from "firebase";
 import styled from "@emotion/styled";
+import { FunctionComponent } from "react";
 
-interface IProps {
+interface ProfileInfoProps {
   email: string;
 }
 
-export default function ProfileInfo(props: IProps) {
+export const ProfileInfo: FunctionComponent<ProfileInfoProps> = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [date, setDate] = useState("");
@@ -73,4 +74,4 @@ export default function ProfileInfo(props: IProps) {
   });
 
   return <ProfileInfo>{information}</ProfileInfo>;
-}
+};

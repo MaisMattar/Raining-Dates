@@ -4,8 +4,9 @@ import firebase from "../../firebase";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import styled from "@emotion/styled";
+import { FunctionComponent } from "react";
 
-export default function MyProfileInfo() {
+export const MyProfileInfo: FunctionComponent = () => {
   const { currentUser } = useAuth();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -83,4 +84,4 @@ export default function MyProfileInfo() {
       <ProfileInfo>{information}</ProfileInfo>
     </div>
   );
-}
+};

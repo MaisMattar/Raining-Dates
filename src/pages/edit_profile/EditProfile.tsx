@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useRef } from "react";
 import { useHistory, Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import { useAuth } from "../../components/contexts/AuthContext";
 import firebase from "../../firebase";
 import styled from "@emotion/styled";
 
-export default function EditProfile() {
+export const EditProfile: FunctionComponent = () => {
   const firstnameRef = useRef(null);
   const lastnameRef = useRef(null);
   const passwordRef = useRef(null);
@@ -194,4 +194,4 @@ export default function EditProfile() {
       </Container>
     </>
   );
-}
+};

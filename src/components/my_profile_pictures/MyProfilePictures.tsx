@@ -9,8 +9,9 @@ import { useAuth } from "../contexts/AuthContext";
 import { Cancel, Image } from "@material-ui/icons";
 import { Alert } from "react-bootstrap";
 import styled from "@emotion/styled";
+import { FunctionComponent } from "react";
 
-export default function ProfilePictures() {
+export const MyProfilePictures: FunctionComponent = () => {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [profilePictures, setProfilePictures] = useState<Array<string>>([]);
@@ -165,4 +166,4 @@ export default function ProfilePictures() {
       {error && <RemoveAlert variant="danger">{error}</RemoveAlert>}
     </div>
   );
-}
+};

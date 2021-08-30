@@ -3,13 +3,13 @@
  */
 
 import { Button, Form, Alert } from "react-bootstrap";
-import { useRef, useState } from "react";
+import { FunctionComponent, useRef, useState } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import firebase, { storage } from "../../firebase";
 import styled from "@emotion/styled";
 
-export default function Signup() {
+export const Signup: FunctionComponent = () => {
   const firstnameRef = useRef(null);
   const lastnameRef = useRef(null);
   const dateRef = useRef(null);
@@ -268,4 +268,4 @@ export default function Signup() {
       </Wrapper>
     </Container>
   );
-}
+};

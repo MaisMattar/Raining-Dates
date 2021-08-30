@@ -1,7 +1,8 @@
 /** @format */
 
-import Groups from "../../components/groups/Groups";
+import { Groups } from "../../components/groups/Groups";
 import styled from "@emotion/styled";
+import { FunctionComponent } from "react";
 
 interface Group {
   text: string;
@@ -9,11 +10,11 @@ interface Group {
   endAge: number;
 }
 
-interface IProps {
+interface HomeProps {
   ageGroups: Array<Group>;
 }
 
-export default function Home(props: IProps) {
+export const Home: FunctionComponent<HomeProps> = (props) => {
   const HomeText = styled.div`
     text-align: center;
     margin-top: 30px;
@@ -29,4 +30,4 @@ export default function Home(props: IProps) {
       </div>
     </>
   );
-}
+};

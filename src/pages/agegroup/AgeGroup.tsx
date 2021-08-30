@@ -4,7 +4,7 @@
 
 import { Link } from "react-router-dom";
 import firebase from "firebase";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FunctionComponent } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
 
@@ -14,11 +14,11 @@ interface Group {
   endAge: number;
 }
 
-interface Props {
+interface AgeGroupProps {
   ageGroup: Group;
 }
 
-export default function AgeGroup(props: Props) {
+export const AgeGroup: FunctionComponent<AgeGroupProps> = (props) => {
   const [peopleProfiles, setPeopleProfiles] = useState<
     Array<firebase.firestore.DocumentData>
   >([]);
@@ -99,4 +99,4 @@ export default function AgeGroup(props: Props) {
       <PeopleList>{pictures}</PeopleList>
     </div>
   );
-}
+};

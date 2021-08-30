@@ -3,12 +3,14 @@
  */
 
 import { Button } from "react-bootstrap";
-import MyProfileInfo from "../../components/my_profile_info/MyProfileInfo";
-import MyProfilePictures from "../../components/my_profile_pictures/MyProfilePictures";
+import { MyProfileInfo } from "../../components/my_profile_info/MyProfileInfo";
+import { MyProfilePictures } from "../../components/my_profile_pictures/MyProfilePictures";
 import { useHistory } from "react-router-dom";
 import styled from "@emotion/styled";
+import { FunctionComponent } from "react";
+import { MouseEvent } from "react";
 
-export default function MyProfile() {
+export const MyProfile: FunctionComponent = () => {
   const history = useHistory();
 
   const Container = styled.div`
@@ -43,7 +45,7 @@ export default function MyProfile() {
     margin-top: 15px;
   `;
 
-  function handleEditProfile(event) {
+  function handleEditProfile(event: MouseEvent) {
     history.push("/edit-profile");
   }
 
@@ -61,4 +63,4 @@ export default function MyProfile() {
       </Container>
     </>
   );
-}
+};

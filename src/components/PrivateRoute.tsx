@@ -1,10 +1,16 @@
 /** @format */
 
-import React from "react";
+import React, { Component, FunctionComponent } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 
-export default function PrivateRoute({ component: Component, props, ...rest }) {
+interface RouteProps {
+  component: Component,
+  componentProps: object,
+  rest: Array<any>
+}
+
+export const PrivateRoute : FunctionComponent<RouteProps> = ({ component: Component, props, ...rest }) {
   const { currentUser } = useAuth();
   return (
     <Route

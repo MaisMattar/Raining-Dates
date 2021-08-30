@@ -1,24 +1,24 @@
 /** @format */
 
-import React, { useContext, useState, useEffect } from "react";
-import { ReactNode } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  FunctionComponent,
+} from "react";
 import { auth } from "../../firebase";
 
-const AuthContext = React.createContext({ 
+const AuthContext = React.createContext({
   authenticated: true,
-  lang: 'en',
-  theme: 'dark'
+  lang: "en",
+  theme: "dark",
 });
-
-interface IProps {
-  children: ReactNode
-}
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
-export function AuthProvider({ children }: IProps) {
+export const AuthProvider: FunctionComponent = (props) => {
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +35,7 @@ export function AuthProvider({ children }: IProps) {
   }
 
   function updateEmail(email: string) {
-    if(currentUser !== null){
+    if (currentUser !== null) {
       return currentUser.updateEmail(email);
     }
   }
@@ -61,14 +61,14 @@ export function AuthProvider({ children }: IProps) {
     logout,
     updateEmail,
     updatePassword,
-    lang: 'de',
+    lang: "de",
     authenticated: true,
-    theme: 'light'
+    theme: "light",
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {!loading && props.children}
     </AuthContext.Provider>
   );
-}
+};

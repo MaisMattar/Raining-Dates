@@ -8,8 +8,9 @@ import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
+import { FunctionComponent } from "react";
 
-export default function Login() {
+export const Login: FunctionComponent = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const { login } = useAuth();
@@ -144,4 +145,4 @@ export default function Login() {
       </Wrapper>
     </Container>
   );
-}
+};

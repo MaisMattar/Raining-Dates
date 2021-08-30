@@ -6,8 +6,9 @@ import { AccountBox, Chat, ExitToApp } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
+import { FunctionComponent } from "react";
 
-export default function Topbar() {
+export const Topbar: FunctionComponent = () => {
   const { currentUser, logout } = useAuth();
   const history = useHistory();
 
@@ -92,4 +93,4 @@ export default function Topbar() {
       </Right>
     </Container>
   );
-}
+};
