@@ -8,9 +8,13 @@ import { Favorite, NotInterested } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import firebase from "firebase";
-import { useState, useEffect, FunctionComponent } from "react";
+import { useState, useEffect, FunctionComponent, MouseEvent } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
+
+type ProfileParams = {
+  email: string;
+};
 
 export const Profile: FunctionComponent = () => {
   const [firstName, setFirstName] = useState("");
@@ -19,7 +23,7 @@ export const Profile: FunctionComponent = () => {
   const [notInterested, setNotInterested] = useState(false);
   const { currentUser } = useAuth();
 
-  let { email } = useParams();
+  let { email } = useParams<ProfileParams>();
 
   const Container = styled.div`
     display: flex;
@@ -73,7 +77,7 @@ export const Profile: FunctionComponent = () => {
       .get()
       .then((doc) => {
         const documentData = doc.data();
-        if (documentData.profiles.includes(email)) setNotInterested(true);
+        if (documentData!.profiles.includes(email)) setNotInterested(true);
       });
   };
 
@@ -85,7 +89,7 @@ export const Profile: FunctionComponent = () => {
       .get()
       .then((doc) => {
         const documentData = doc.data();
-        if (documentData.profiles.includes(email)) setInterested(true);
+        if (documentData!.profiles.includes(email)) setInterested(true);
         else checkIfNotInterested();
       });
   };
@@ -99,14 +103,17 @@ export const Profile: FunctionComponent = () => {
       .then((doc) => {
         console.log("log");
         const documentData = doc.data();
-        setFirstName(documentData.first_name);
-        setLastName(documentData.last_name);
+        setFirstName(documentData!.first_name);
+        setLastName(documentData!.last_name);
       });
 
     checkIfInterested();
   }, []);
 
-  const addProfileToCollection = (collectionToAdd, collectionToRemove) => {
+  const addProfileToCollection = (
+    collectionToAdd: string,
+    collectionToRemove: string
+  ) => {
     firebase
       .firestore()
       .collection(collectionToAdd)
@@ -124,7 +131,7 @@ export const Profile: FunctionComponent = () => {
       });
   };
 
-  const handleInterested = (e) => {
+  const handleInterested = (e: MouseEvent) => {
     if (!interested) {
       setInterested(true);
       setNotInterested(false);
@@ -132,7 +139,7 @@ export const Profile: FunctionComponent = () => {
     }
   };
 
-  const handleNotInterested = (e) => {
+  const handleNotInterested = (e: MouseEvent) => {
     if (!notInterested) {
       setNotInterested(true);
       setInterested(false);

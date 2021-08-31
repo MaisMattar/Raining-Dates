@@ -25,12 +25,9 @@ export const App: FunctionComponent = () => {
 
   const ageGroupsRoutes = ageGroups.map((group) => {
     return (
-      <PrivateRoute
-        key={`/${group.text}`}
-        path={`/${group.text}`}
-        component={AgeGroup}
-        props={{ ageGroup: group }}
-      />
+      <PrivateRoute key={`/${group.text}`} path={`/${group.text}`}>
+        <AgeGroup ageGroup={group} />
+      </PrivateRoute>
     );
   });
 
@@ -41,13 +38,9 @@ export const App: FunctionComponent = () => {
           <Topbar />
           <div>
             <Switch>
-              <PrivateRoute
-                key="/home"
-                exact
-                path="/"
-                component={Home}
-                props={{ ageGroups: ageGroups }}
-              />
+              <PrivateRoute key="/home" exact path="/">
+                <Home ageGroups={ageGroups} />
+              </PrivateRoute>
               {ageGroupsRoutes}
               <PrivateRoute
                 key="/myprofile"

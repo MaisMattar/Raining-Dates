@@ -9,11 +9,11 @@ import firebase from "../../firebase";
 import styled from "@emotion/styled";
 
 export const EditProfile: FunctionComponent = () => {
-  const firstnameRef = useRef(null);
-  const lastnameRef = useRef(null);
-  const passwordRef = useRef(null);
-  const educationRef = useRef(null);
-  const workplaceRef = useRef(null);
+  const firstnameRef = useRef<HTMLInputElement | null>(null);
+  const lastnameRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const educationRef = useRef<HTMLInputElement | null>(null);
+  const workplaceRef = useRef<HTMLInputElement | null>(null);
   const history = useHistory();
   const { currentUser, updatePassword } = useAuth();
   const [error, setError] = useState("");
@@ -110,12 +110,12 @@ export const EditProfile: FunctionComponent = () => {
     .then((doc) => {
       if (doc.exists) {
         const documentData = doc.data();
-        firstnameRef.current.value = documentData.first_name;
-        lastnameRef.current.value = documentData.last_name;
-        educationRef.current.value =
-          documentData.education === undefined ? "" : documentData.education;
-        workplaceRef.current.value =
-          documentData.workplace === undefined ? "" : documentData.workplace;
+        firstnameRef!.current!.value = documentData!.first_name;
+        lastnameRef!.current!.value = documentData!.last_name;
+        educationRef!.current!.value =
+          documentData!.education === undefined ? "" : documentData!.education;
+        workplaceRef!.current!.value =
+          documentData!.workplace === undefined ? "" : documentData!.workplace;
       } else {
         console.log("No such document!");
       }
@@ -132,7 +132,6 @@ export const EditProfile: FunctionComponent = () => {
           id={info.id}
           ref={info.ref}
           type={info.type}
-          defaultValue={info.defaultValue}
           placeholder={
             info.id === "password" ? "Leave blank to keep the same" : ""
           }
@@ -142,7 +141,7 @@ export const EditProfile: FunctionComponent = () => {
     );
   });
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -150,18 +149,18 @@ export const EditProfile: FunctionComponent = () => {
     const promises = [];
 
     if (
-      passwordRef.current.value !== "" &&
-      passwordRef.current.value !== currentUser.pasword
+      passwordRef!.current!.value !== "" &&
+      passwordRef!.current!.value !== currentUser.pasword
     ) {
-      promises.push(updatePassword(passwordRef.current.value));
+      promises.push(updatePassword(passwordRef!.current!.value));
     }
 
     promises.push(
       docRef.update({
-        first_name: firstnameRef.current.value,
-        last_name: lastnameRef.current.value,
-        education: educationRef.current.value,
-        workplace: workplaceRef.current.value,
+        first_name: firstnameRef!.current!.value,
+        last_name: lastnameRef!.current!.value,
+        education: educationRef!.current!.value,
+        workplace: workplaceRef!.current!.value,
       })
     );
 

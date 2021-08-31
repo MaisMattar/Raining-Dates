@@ -8,11 +8,16 @@ import React, {
 } from "react";
 import { auth } from "../../firebase";
 
-const AuthContext = React.createContext({
-  authenticated: true,
-  lang: "en",
-  theme: "dark",
-});
+type ContextProps = {
+  currentUser: any;
+  signup: any;
+  login: any;
+  logout: any;
+  updateEmail: any;
+  updatePassword: any;
+};
+
+const AuthContext = React.createContext<Partial<ContextProps>>({});
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -61,9 +66,9 @@ export const AuthProvider: FunctionComponent = (props) => {
     logout,
     updateEmail,
     updatePassword,
-    lang: "de",
-    authenticated: true,
-    theme: "light",
+    // lang: "de",
+    // authenticated: true,
+    // theme: "light",
   };
 
   return (

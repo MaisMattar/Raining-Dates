@@ -19,6 +19,7 @@ interface AgeGroupProps {
 }
 
 export const AgeGroup: FunctionComponent<AgeGroupProps> = (props) => {
+  console.log("props.ageGroup.startAge = ", props.ageGroup.startAge);
   const [peopleProfiles, setPeopleProfiles] = useState<
     Array<firebase.firestore.DocumentData>
   >([]);

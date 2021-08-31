@@ -1,27 +1,28 @@
 /** @format */
 
 import React, { Component, FunctionComponent } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, RouteProps } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 
-interface RouteProps {
-  component: Component,
-  componentProps: object,
-  rest: Array<any>
-}
+interface PrivateRouteProps extends RouteProps {}
 
-export const PrivateRoute : FunctionComponent<RouteProps> = ({ component: Component, props, ...rest }) {
+export const PrivateRoute: FunctionComponent<PrivateRouteProps> = ({
+  ...rest
+}) => {
   const { currentUser } = useAuth();
-  return (
-    <Route
-      {...rest}
-      render={(p) => {
-        return currentUser ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/login" />
-        );
-      }}
-    ></Route>
-  );
-}
+
+  if (currentUser === null) return <Redirect to="/login" />;
+  return <Route {...rest} />;
+  // return (
+  //   <Route
+  //     {...rest}
+  //     render={(p) => {
+  //       return currentUser ? (
+  //         <Component {...props} />
+  //       ) : (
+  //         <Redirect to="/login" />
+  //       );
+  //     }}
+  //   ></Route>
+  // );
+};

@@ -11,8 +11,8 @@ import styled from "@emotion/styled";
 import { FunctionComponent } from "react";
 
 export const Login: FunctionComponent = () => {
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
   const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -104,12 +104,19 @@ export const Login: FunctionComponent = () => {
     );
   });
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
+      if (
+        emailRef !== null &&
+        emailRef.current !== null &&
+        passwordRef !== null &&
+        passwordRef.current !== null
+      ) {
+        await login(emailRef.current.value, passwordRef.current.value);
+      }
       history.push("/");
     } catch {
       setError("Failed to log in");

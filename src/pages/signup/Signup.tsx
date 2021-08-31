@@ -10,15 +10,15 @@ import firebase, { storage } from "../../firebase";
 import styled from "@emotion/styled";
 
 export const Signup: FunctionComponent = () => {
-  const firstnameRef = useRef(null);
-  const lastnameRef = useRef(null);
-  const dateRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const firstnameRef = useRef<HTMLInputElement | null>(null);
+  const lastnameRef = useRef<HTMLInputElement | null>(null);
+  const dateRef = useRef<HTMLInputElement | null>(null);
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
   const { signup } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<File | null>(null);
   const history = useHistory();
 
   const Container = styled.div`
@@ -121,22 +121,28 @@ export const Signup: FunctionComponent = () => {
     return (
       <Form.Group id={info.id}>
         <Form.Label>{info.label}</Form.Label>
-        <Form.Control ref={info.ref} required type={info.type}></Form.Control>
+        <Form.Control
+          ref={info.ref}
+          required
+          type={info.type}
+          defaultValue={
+            info.ref && info.ref.current ? info.ref!.current!.value : ""
+          }
+        ></Form.Control>
       </Form.Group>
     );
   });
 
-  function parseDate(date_of_birth) {
-    var b = date_of_birth.split(/\D/);
-    return new Date(b[0], --b[1], b[2]);
+  function parseDate(date_of_birth: string) {
+    const b = date_of_birth.split(/\D/);
+    let month = parseInt(b[1]);
+    return new Date(parseInt(b[0]), --month, parseInt(b[2]));
   }
 
   const checkIfLegalAge = () => {
-    const date_of_birth = parseDate(dateRef.current.value);
+    const date_of_birth = parseDate(dateRef!.current!.value);
     const legalDate = new Date();
     legalDate.setFullYear(legalDate.getFullYear() - 20);
-    console.log("date_of_birth = ", date_of_birth);
-    console.log("legalDate = ", legalDate);
     if (date_of_birth < legalDate) {
       console.log("inside if");
       return true;
@@ -144,10 +150,11 @@ export const Signup: FunctionComponent = () => {
     return false;
   };
 
-  const handleChange = (e) => {
-    if (e.target.files[0]) {
-      setImage(e.target.files[0]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files === null || e.target.files[0] === null) {
+      return;
     }
+    setImage(e.target.files[0]);
     setLoading(false);
   };
 
@@ -156,11 +163,11 @@ export const Signup: FunctionComponent = () => {
     const docRef = firebase
       .firestore()
       .collection("users")
-      .doc(emailRef.current.value);
+      .doc(emailRef!.current!.value);
 
-    const imageName = emailRef.current.value + image.name;
+    const imageName = emailRef!.current!.value + image!.name;
 
-    const uploadImage = storage.ref(`images/${imageName}`).put(image);
+    const uploadImage = storage.ref(`images/${imageName}`).put(image!);
     uploadImage.on(
       "state_changed",
       (snapshot) => {},
@@ -175,10 +182,10 @@ export const Signup: FunctionComponent = () => {
           .then((url) => {
             docRef
               .set({
-                first_name: firstnameRef.current.value,
-                last_name: lastnameRef.current.value,
-                date_of_birth: parseDate(dateRef.current.value),
-                email: emailRef.current.value,
+                first_name: firstnameRef!.current!.value,
+                last_name: lastnameRef!.current!.value,
+                date_of_birth: parseDate(dateRef!.current!.value),
+                email: emailRef!.current!.value,
                 images: [url],
                 education: "",
                 workplace: "",
@@ -187,7 +194,7 @@ export const Signup: FunctionComponent = () => {
                 console.log("Document added succesfully!");
                 history.push("/");
               })
-              .catch((e) => {
+              .catch((e: any) => {
                 setError("Failed to create an account " + e);
               });
             setLoading(false);
@@ -200,25 +207,25 @@ export const Signup: FunctionComponent = () => {
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
-    } catch (e) {
+      await signup(emailRef!.current!.value, passwordRef!.current!.value);
+    } catch (e: any) {
       setError("Failed to create an account. " + e.message);
       setLoading(false);
       return;
     }
   };
 
-  const createInterestsFirebaseDoc = (collectionName) => {
+  const createInterestsFirebaseDoc = (collectionName: string) => {
     firebase
       .firestore()
       .collection(collectionName)
-      .doc(emailRef.current.value)
+      .doc(emailRef!.current!.value)
       .set({
         profiles: [],
       });
   };
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!checkIfLegalAge()) {
