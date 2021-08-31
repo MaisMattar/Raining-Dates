@@ -62,7 +62,7 @@ export const Topbar: FunctionComponent = () => {
   `;
 
   const IconLink = styled(Link)`
-    color: "white";
+    color: white;
   `;
 
   return (

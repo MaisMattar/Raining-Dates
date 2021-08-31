@@ -38,7 +38,7 @@ export const Groups: FunctionComponent<GroupsProps> = ({ ageGroups }) => {
   `;
 
   const GroupLink = styled(Link)`
-    text-ecoration: none;
+    text-decoration: none;
     width: 250px;
   `;
 

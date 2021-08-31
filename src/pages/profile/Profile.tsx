@@ -8,7 +8,13 @@ import { Favorite, NotInterested } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import firebase from "firebase";
-import { useState, useEffect, FunctionComponent, MouseEvent } from "react";
+import {
+  useMemo,
+  useState,
+  useEffect,
+  FunctionComponent,
+  MouseEvent,
+} from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
 
@@ -16,7 +22,10 @@ type ProfileParams = {
   email: string;
 };
 
-export const Profile: FunctionComponent = () => {
+interface ProfileProps {}
+
+export const Profile: FunctionComponent<ProfileProps> = (props) => {
+  const [userEmail, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [interested, setInterested] = useState(false);
@@ -105,8 +114,8 @@ export const Profile: FunctionComponent = () => {
         const documentData = doc.data();
         setFirstName(documentData!.first_name);
         setLastName(documentData!.last_name);
+        setEmail(email);
       });
-
     checkIfInterested();
   }, []);
 
@@ -147,18 +156,21 @@ export const Profile: FunctionComponent = () => {
     }
   };
 
+  const ProfilePicturesComponent = useMemo(() => {
+    if (userEmail !== "") return <ProfilePictures email={userEmail} />;
+  }, [userEmail]);
+  const ProfileInfoComponent = useMemo(() => {
+    if (userEmail !== "") return <ProfileInfo email={userEmail} />;
+  }, [userEmail]);
+
   return (
     <>
       <Text>
         {firstName} {lastName}'s Profile
       </Text>
       <Container>
-        <Part>
-          <ProfilePictures email={email.toString()} />
-        </Part>
-        <Part>
-          <ProfileInfo email={email.toString()} />
-        </Part>
+        <Part>{ProfilePicturesComponent}</Part>
+        <Part>{ProfileInfoComponent}</Part>
       </Container>
       <ButtonsContainer>
         <ProfileIconButton onClick={handleInterested}>

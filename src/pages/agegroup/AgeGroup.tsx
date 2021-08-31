@@ -71,11 +71,12 @@ export const AgeGroup: FunctionComponent<AgeGroupProps> = (props) => {
       .where("date_of_birth", ">=", getDateInTimestamp(props.ageGroup.endAge))
       .get()
       .then((querySnapshot) => {
-        const people = Array<firebase.firestore.DocumentData>([]);
+        const people: Array<firebase.firestore.DocumentData> = [];
         querySnapshot.forEach((doc) => {
           const documentData = doc.data();
-          if (documentData.email !== currentUser.email)
+          if (documentData.email !== currentUser.email) {
             people.push(documentData);
+          }
         });
         setPeopleProfiles(people);
       });
@@ -85,10 +86,7 @@ export const AgeGroup: FunctionComponent<AgeGroupProps> = (props) => {
     return (
       <ListItem key={personProfile.email}>
         <Link to={"/profile/" + personProfile.email}>
-          <PeoplePicture
-            src={personProfile.images[0]}
-            alt={personProfile.images[0]}
-          ></PeoplePicture>
+          <PeoplePicture src={personProfile.images[0]}></PeoplePicture>
         </Link>
       </ListItem>
     );
