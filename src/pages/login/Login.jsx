@@ -1,7 +1,4 @@
-/**
- * @format
- * @jsxImportSource @emotion/react
- */
+/** @format */
 
 import "./login.css";
 import { Button, Form, Alert } from "react-bootstrap";
@@ -9,83 +6,14 @@ import { useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
-import styled from "@emotion/styled";
 
 export default function Login() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const { login } = useAuth();
+  const { currentUser, login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-
-  const Container = styled.div`
-    position: absolute;
-    top: auto;
-    width: 100%;
-    height: 100%;
-    background-image: url("https://www.juneauempire.com/wp-content/uploads/2018/11/6044053_web1_rodion-kutsaev-760882-unsplash.jpg");
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-  `;
-
-  const Wrapper = styled.div`
-    width: 70%;
-    height: 70%;
-    display: flex;
-    flex-wrap: wrap;
-  `;
-
-  const Part = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  `;
-
-  const Logo = styled.h3`
-    font-size: 50px;
-    font-weight: 800;
-    color: white;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px black;
-  `;
-
-  const Description = styled.span`
-    font-size: 24px;
-    color: white;
-    font-weight: bold;
-    text-shadow: 2px 2px black;
-  `;
-
-  const Box = styled.div`
-    height: 300px;
-    width: 370px;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.664);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    font-size: 17px;
-  `;
-
-  const LoginButton = styled(Button)`
-    height: 45px;
-    width: 100%;
-    border-radius: 10px;
-    margin-top: 15px;
-  `;
-
-  const LoginAlert = styled(Alert)`
-    width: 370px;
-    text-align: center;
-    font-size: 18px;
-  `;
 
   const loginInfo = [
     { id: "email", label: "Email", type: "email", ref: emailRef },
@@ -119,27 +47,31 @@ export default function Login() {
   }, []);
 
   return (
-    <Container>
-      <Wrapper>
-        <Part>
-          <Logo>Raining Dates</Logo>
-          <Description>Find your next date</Description>
-        </Part>
-        <Part>
-          {error && <LoginAlert variant="danger">{error}</LoginAlert>}
-          <Box>
+    <div className="login">
+      <div className="loginWrapper">
+        <div className="loginLeft">
+          <h3 className="loginLogo">Raining Dates</h3>
+          <span className="loginDesc">Find your next date</span>
+        </div>
+        <div className="loginRight">
+          {error && (
+            <Alert variant="danger" className="loginAlert">
+              {error}
+            </Alert>
+          )}
+          <div className="loginBox">
             <Form onSubmit={handleSubmit}>
               {loginInfoInputs}
-              <LoginButton disabled={loading} type="submit">
+              <Button disabled={loading} type="submit" className="loginButton">
                 Log In
-              </LoginButton>
+              </Button>
             </Form>
-            <div css={{ textAlign: "center" }}>
+            <div className="signupText">
               Don't have an account? <Link to="/signup">Sign Up</Link>
             </div>
-          </Box>
-        </Part>
-      </Wrapper>
-    </Container>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

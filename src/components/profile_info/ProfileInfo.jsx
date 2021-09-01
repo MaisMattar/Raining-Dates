@@ -3,7 +3,6 @@
 import "./profileinfo.css";
 import { useState, useEffect } from "react";
 import firebase from "firebase";
-import styled from "@emotion/styled";
 
 export default function ProfileInfo(props) {
   const [firstName, setFirstName] = useState("");
@@ -11,19 +10,6 @@ export default function ProfileInfo(props) {
   const [date, setDate] = useState("");
   const [education, setEducation] = useState("");
   const [workplace, setWorkplace] = useState("");
-
-  const ProfileInfo = styled.div`
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: wrap;
-  `;
-
-  const ProfileText = styled.div`
-    font-size: 23px;
-    margin-bottom: 10px;
-  `;
 
   const dateToString = (date) => {
     let day = date.getDate();
@@ -61,11 +47,11 @@ export default function ProfileInfo(props) {
 
   const information = profileInfo.map((info, index) => {
     return (
-      <ProfileText key={info.label}>
+      <div key={info.label} className="myProfileInfoText">
         {info.label}: {info.value}
-      </ProfileText>
+      </div>
     );
   });
 
-  return <ProfileInfo>{information}</ProfileInfo>;
+  return <div className="profileInfo">{information}</div>;
 }

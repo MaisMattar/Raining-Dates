@@ -1,6 +1,6 @@
 /** @format */
 
-/* .topbarContainer {
+.topbarContainer {
   height: 70px;
   width: 100%;
   background-color: rgb(62, 121, 170);
@@ -46,4 +46,4 @@
 
 .topbarIconLink:active {
   color: darksalmon;
-} */
+}
