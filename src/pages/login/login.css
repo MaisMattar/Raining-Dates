@@ -1,5 +1,5 @@
 /** @format */
-/* .login {
+.login {
   position: absolute;
   top: auto;
   width: 100%;
@@ -55,10 +55,6 @@
   font-size: 17px;
 }
 
-.signupText {
-  text-align: center;
-} 
-
 .loginButton {
   height: 45px;
   width: 100%;
@@ -66,9 +62,12 @@
   margin-top: 15px;
 }
 
+.signupText {
+  text-align: center;
+}
+
 .loginAlert {
   width: 370px;
   text-align: center;
   font-size: 18px;
 }
-*/

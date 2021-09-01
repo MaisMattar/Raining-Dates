@@ -1,7 +1,4 @@
-/**
- * @format
- * * @jsxImportSource @emotion/react
- */
+/** @format */
 
 import "./myprofilepictures.css";
 import { useState, useEffect } from "react";
@@ -9,52 +6,12 @@ import firebase, { storage } from "../../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import { Cancel, Image } from "@material-ui/icons";
 import { Alert } from "react-bootstrap";
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 
 export default function ProfilePictures() {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [profilePictures, setProfilePictures] = useState([]);
   const [error, setError] = useState("");
-
-  const PictureList = styled.ul`
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    grid-gap: 1em;
-  `;
-
-  const Picture = styled.img`
-    width: 170px;
-    height: 170px;
-    border-radius: 10px;
-    -webkit-box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
-    box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
-    object-fit: cover;
-  `;
-
-  const AddPicture = styled.div`
-    width: 170px;
-    height: 170px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `;
-
-  const DeleteButton = styled.div`
-    position: relative;
-    top: 16px;
-    right: 10px;
-    cursor: pointer;
-  `;
-
-  const RemoveAlert = styled(Alert)`
-    margin-top: 40px;
-    margin-left: 20px;
-    width: 320px;
-    text-align: center;
-  `;
 
   const docRef = firebase
     .firestore()
@@ -132,28 +89,23 @@ export default function ProfilePictures() {
 
   const pictures = profilePictures.map((picture, index) => {
     return (
-      <li key={index}>
-        <DeleteButton onClick={() => removeImage(index)}>
+      <li key={index} className="myPictureListItem">
+        <div onClick={() => removeImage(index)} className="myDeleteButton">
           <Cancel />
-        </DeleteButton>
-        <Picture src={picture} alt={index}></Picture>
+        </div>
+        <img src={picture} alt={index} className="myPicture"></img>
       </li>
     );
   });
 
   return (
     <div>
-      <PictureList>
+      <ul className="myPictureList">
         {pictures}
         <li key={profilePictures.size}>
-          <AddPicture>
+          <div className="myAddPicture">
             <label htmlFor="single">
-              <Image
-                css={css`
-                  transform: scale(3);
-                  cursor: pointer;
-                `}
-              />
+              <Image className="myProfileAddIcon" />
             </label>
             <input
               disabled={loading}
@@ -161,10 +113,14 @@ export default function ProfilePictures() {
               id="single"
               onChange={handleImageUpload}
             />
-          </AddPicture>
+          </div>
         </li>
-      </PictureList>
-      {error && <RemoveAlert variant="danger">{error}</RemoveAlert>}
+      </ul>
+      {error && (
+        <Alert variant="danger" className="removePictureAlert">
+          {error}
+        </Alert>
+      )}
     </div>
   );
 }

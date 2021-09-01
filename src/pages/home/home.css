@@ -1,8 +1,11 @@
 /** @format */
 
-/* .homeContainerText {
+.homeContainer {
+}
+
+.homeContainerText {
   text-align: center;
   margin-top: 30px;
   color: rgb(62, 121, 170);
   font-size: 30px;
-} */
+}
