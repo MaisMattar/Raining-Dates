@@ -31,7 +31,14 @@ export default function Signup() {
     return (
       <Form.Group id={info.id}>
         <Form.Label>{info.label}</Form.Label>
-        <Form.Control ref={info.ref} required type={info.type}></Form.Control>
+        <Form.Control
+          ref={info.ref}
+          required
+          type={info.type}
+          defaultValue={
+            info.ref && info.ref.current ? info.ref.current.value : ""
+          }
+        ></Form.Control>
       </Form.Group>
     );
   });
