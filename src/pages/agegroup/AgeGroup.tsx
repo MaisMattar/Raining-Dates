@@ -11,6 +11,7 @@ import { useState, useEffect, FunctionComponent } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { jsx } from "@emotion/react";
 import { ageGroupStyles } from "./AgeGroupStyles";
+import { getDateInTimestamp } from "../../Utilities";
 
 interface Group {
   text: string;
@@ -28,12 +29,6 @@ export const AgeGroup: FunctionComponent<AgeGroupProps> = (props) => {
   >([]);
   const { currentUser } = useAuth();
   const { text, peopleList, peoplePicture, listItem } = ageGroupStyles;
-
-  const getDateInTimestamp = (age: number) => {
-    const date = new Date();
-    date.setFullYear(date.getFullYear() - age);
-    return firebase.firestore.Timestamp.fromDate(date);
-  };
 
   useEffect(() => {
     firebase

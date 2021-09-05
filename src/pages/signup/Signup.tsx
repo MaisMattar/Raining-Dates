@@ -6,13 +6,13 @@
 /** @jsx jsx */
 
 import { Button, Form, Alert } from "react-bootstrap";
-import { FunctionComponent, useRef, useState, MutableRefObject } from "react";
+import { FunctionComponent, useRef, useState } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import firebase, { storage } from "../../firebase";
 import { css, jsx } from "@emotion/react";
 import { signupStyles } from "./SignupStyles";
-import { formField } from "../../Utilities";
+import { formField, parseDate, checkIfLegalAge } from "../../Utilities";
 
 export const Signup: FunctionComponent = () => {
   const firstnameRef = useRef<HTMLInputElement | null>(null);
@@ -61,23 +61,6 @@ export const Signup: FunctionComponent = () => {
       </Form.Group>
     );
   });
-
-  function parseDate(date_of_birth: string) {
-    const b = date_of_birth.split(/\D/);
-    let month = parseInt(b[1]);
-    return new Date(parseInt(b[0]), --month, parseInt(b[2]));
-  }
-
-  const checkIfLegalAge = () => {
-    const date_of_birth = parseDate(dateRef!.current!.value);
-    const legalDate = new Date();
-    legalDate.setFullYear(legalDate.getFullYear() - 20);
-    if (date_of_birth < legalDate) {
-      console.log("inside if");
-      return true;
-    }
-    return false;
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null || e.target.files[0] === null) {
@@ -157,7 +140,7 @@ export const Signup: FunctionComponent = () => {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!checkIfLegalAge()) {
+    if (!checkIfLegalAge(dateRef!.current!.value)) {
       setError("Failed to create an account. You must be 20 or older!");
       return;
     }

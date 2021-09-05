@@ -7,10 +7,6 @@ import firebase from "firebase";
 import { useState, useEffect, FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
 
-interface ProfilePicturesProps {
-  email: string;
-}
-
 const pictureList = css`
   list-style: none;
   display: grid;
@@ -26,6 +22,10 @@ const pictureStyle = css`
   box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
   object-fit: cover;
 `;
+
+interface ProfilePicturesProps {
+  email: string;
+}
 
 export const ProfilePictures: FunctionComponent<ProfilePicturesProps> = (
   props
