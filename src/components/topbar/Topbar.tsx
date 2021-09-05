@@ -1,16 +1,20 @@
 /**
  * @format
  */
+/** @jsxRuntime classic */
+/** @jsx jsx */
 
 import { AccountBox, Chat, ExitToApp } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
-import styled from "@emotion/styled";
 import { FunctionComponent } from "react";
+import { css, jsx } from "@emotion/react";
+import { topbarStyles } from "./TopbarStyles";
 
 export const Topbar: FunctionComponent = () => {
   const { currentUser, logout } = useAuth();
   const history = useHistory();
+  const { container, logo, right, icons, iconItem, left, link } = topbarStyles;
 
   async function handleLogout() {
     try {
@@ -21,76 +25,37 @@ export const Topbar: FunctionComponent = () => {
     }
   }
 
-  const Container = styled.div`
-    height: 70px;
-    width: 100%;
-    background-color: rgb(62, 121, 170);
-    display: flex;
-    align-items: center;
-    position: sticky;
-  `;
-
-  const Logo = styled.span`
-    font-size: 30px;
-    margin-left: 20px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-  `;
-
-  const Right = styled.div`
-    flex: 2;
-    color: white;
-  `;
-
-  const Icons = styled.div`
-    display: flex;
-    justify-content: flex-end;
-  `;
-
-  const IconItem = styled.div`
-    margin-right: 15px;
-    cursor: pointer;
-  `;
-
-  const HomeLink = styled(Link)`
-    text-decoration: none;
-  `;
-
-  const Left = styled.div`
-    flex: 5;
-  `;
-
-  const IconLink = styled(Link)`
-    color: white;
-  `;
-
   return (
-    <Container>
-      <Left>
-        <HomeLink to="/">
-          <Logo>Raining Dates</Logo>
-        </HomeLink>
-      </Left>
-      <Right>
+    <div css={container}>
+      <div css={left}>
+        <Link
+          css={css`
+            text-decoration: none;
+          `}
+          to="/"
+        >
+          <span css={logo}>Raining Dates</span>
+        </Link>
+      </div>
+      <div css={right}>
         {currentUser && (
-          <Icons>
-            <IconItem>
-              <IconLink to="/myprofile">
+          <div css={icons}>
+            <div css={iconItem}>
+              <Link css={link} to="/myprofile">
                 <AccountBox />
-              </IconLink>
-            </IconItem>
-            <IconItem>
+              </Link>
+            </div>
+            <div css={iconItem}>
               <Chat />
-            </IconItem>
-            <IconItem>
-              <IconLink to="/login">
+            </div>
+            <div css={iconItem}>
+              <Link css={link} to="/login">
                 <ExitToApp onClick={handleLogout} />
-              </IconLink>
-            </IconItem>
-          </Icons>
+              </Link>
+            </div>
+          </div>
         )}
-      </Right>
-    </Container>
+      </div>
+    </div>
   );
 };

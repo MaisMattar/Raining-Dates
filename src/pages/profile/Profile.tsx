@@ -2,71 +2,34 @@
  * @format
  */
 
+/** @jsxRuntime classic */
+/** @jsx jsx */
+
 import { ProfilePictures } from "../../components/profile_pictures/ProfilePictures";
 import { ProfileInfo } from "../../components/profile_info/ProfileInfo";
 import { Favorite, NotInterested } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import firebase from "firebase";
-import {
-  useMemo,
-  useState,
-  useEffect,
-  FunctionComponent,
-  MouseEvent,
-} from "react";
+import { useState, useEffect, FunctionComponent, MouseEvent } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
+import { jsx } from "@emotion/react";
+import { profileStyles } from "./ProfileStyles";
 
 type ProfileParams = {
   email: string;
 };
 
-interface ProfileProps {}
-
-export const Profile: FunctionComponent<ProfileProps> = (props) => {
-  const [userEmail, setEmail] = useState("");
+export const Profile: FunctionComponent = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [interested, setInterested] = useState(false);
   const [notInterested, setNotInterested] = useState(false);
   const { currentUser } = useAuth();
+  const { container, text, buttonsContainer, iconButton, part } = profileStyles;
 
   let { email } = useParams<ProfileParams>();
-
-  const Container = styled.div`
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-    flex-wrap: wrap;
-    margin-left: 30px;
-  `;
-
-  const Part = styled.div`
-    flex: 1;
-  `;
-
-  const Text = styled.div`
-    text-align: center;
-    margin-top: 30px;
-    font-size: 30px;
-    color: rgb(62, 121, 170);
-    font-weight: bold;
-  `;
-
-  const ButtonsContainer = styled.div`
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-  `;
-
-  const ProfileIconButton = styled(IconButton)`
-    margin-right: 20px;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: white;
-  `;
 
   const FavoriteIcon = styled(Favorite)`
     color: ${interested ? "rgb(248, 148, 164)" : "grey"};
@@ -114,7 +77,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props) => {
         const documentData = doc.data();
         setFirstName(documentData!.first_name);
         setLastName(documentData!.last_name);
-        setEmail(email);
       });
     checkIfInterested();
   }, []);
@@ -156,30 +118,27 @@ export const Profile: FunctionComponent<ProfileProps> = (props) => {
     }
   };
 
-  const ProfilePicturesComponent = useMemo(() => {
-    if (userEmail !== "") return <ProfilePictures email={userEmail} />;
-  }, [userEmail]);
-  const ProfileInfoComponent = useMemo(() => {
-    if (userEmail !== "") return <ProfileInfo email={userEmail} />;
-  }, [userEmail]);
-
   return (
-    <>
-      <Text>
+    <div>
+      <div css={text}>
         {firstName} {lastName}'s Profile
-      </Text>
-      <Container>
-        <Part>{ProfilePicturesComponent}</Part>
-        <Part>{ProfileInfoComponent}</Part>
-      </Container>
-      <ButtonsContainer>
-        <ProfileIconButton onClick={handleInterested}>
+      </div>
+      <div css={container}>
+        <div css={part}>
+          <ProfilePictures email={email} />
+        </div>
+        <div css={part}>
+          <ProfileInfo email={email} />
+        </div>
+      </div>
+      <div css={buttonsContainer}>
+        <IconButton css={iconButton} onClick={handleInterested}>
           <FavoriteIcon />
-        </ProfileIconButton>
-        <ProfileIconButton onClick={handleNotInterested}>
+        </IconButton>
+        <IconButton css={iconButton} onClick={handleNotInterested}>
           <NotInterestedIcon />
-        </ProfileIconButton>
-      </ButtonsContainer>
-    </>
+        </IconButton>
+      </div>
+    </div>
   );
 };

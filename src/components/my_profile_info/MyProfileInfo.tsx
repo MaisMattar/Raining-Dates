@@ -1,10 +1,24 @@
 /** @format */
-
+/** @jsxRuntime classic */
+/** @jsx jsx */
 import firebase from "../../firebase";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import styled from "@emotion/styled";
 import { FunctionComponent } from "react";
+import { css, jsx } from "@emotion/react";
+import { dateToString } from "../../Utilities";
+
+const profileText = css`
+  font-size: 23px;
+  margin-bottom: 10px;
+`;
+const profileInfoStyle = css`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+`;
 
 export const MyProfileInfo: FunctionComponent = () => {
   const { currentUser } = useAuth();
@@ -13,30 +27,6 @@ export const MyProfileInfo: FunctionComponent = () => {
   const [date, setDate] = useState("");
   const [education, setEducation] = useState("");
   const [workplace, setWorkplace] = useState("");
-
-  const ProfileText = styled.div`
-    font-size: 23px;
-    margin-bottom: 10px;
-  `;
-
-  const ProfileInfo = styled.div`
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: wrap;
-  `;
-
-  const dateToString = (date: Date) => {
-    const day = date.getDate();
-    const dayString = day < 10 ? "0" + day : day;
-    const month = date.getMonth() + 1;
-    const monthString = month < 10 ? "0" + month : month;
-
-    const year = date.getFullYear();
-
-    return dayString + "/" + monthString + "/" + year;
-  };
 
   const docRef = firebase
     .firestore()
@@ -73,15 +63,15 @@ export const MyProfileInfo: FunctionComponent = () => {
 
   const information = profileInfo.map((info, index) => {
     return (
-      <ProfileText id={info.label}>
+      <div css={profileText} id={info.label}>
         {info.label}: {info.value}
-      </ProfileText>
+      </div>
     );
   });
 
   return (
     <div>
-      <ProfileInfo>{information}</ProfileInfo>
+      <div css={profileInfoStyle}>{information}</div>
     </div>
   );
 };

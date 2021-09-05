@@ -1,33 +1,36 @@
 /** @format */
 
+/** @jsxRuntime classic */
+/** @jsx jsx */
+
 import firebase from "firebase";
 import { useState, useEffect, FunctionComponent } from "react";
-import styled from "@emotion/styled";
+import { css, jsx } from "@emotion/react";
 
 interface ProfilePicturesProps {
   email: string;
 }
 
+const pictureList = css`
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-gap: 1em;
+`;
+
+const pictureStyle = css`
+  width: 170px;
+  height: 170px;
+  border-radius: 10px;
+  -webkit-box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
+  box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
+  object-fit: cover;
+`;
+
 export const ProfilePictures: FunctionComponent<ProfilePicturesProps> = (
   props
 ) => {
   const [profilePictures, setProfilePictures] = useState([]);
-
-  const PictureList = styled.ul`
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    grid-gap: 1em;
-  `;
-
-  const Picture = styled.img`
-    width: 170px;
-    height: 170px;
-    border-radius: 10px;
-    -webkit-box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
-    box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
-    object-fit: cover;
-  `;
 
   useEffect(() => {
     const docRef = firebase.firestore().collection("users").doc(props.email);
@@ -50,14 +53,14 @@ export const ProfilePictures: FunctionComponent<ProfilePicturesProps> = (
   const pictures = profilePictures.map((picture, index) => {
     return (
       <li key={index}>
-        <Picture src={picture} alt={picture}></Picture>
+        <img css={pictureStyle} src={picture} alt={picture}></img>
       </li>
     );
   });
 
   return (
     <div>
-      <PictureList>{pictures}</PictureList>
+      <ul css={pictureList}>{pictures}</ul>
     </div>
   );
 };

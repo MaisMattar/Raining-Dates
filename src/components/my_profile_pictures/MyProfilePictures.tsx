@@ -1,64 +1,32 @@
 /**
  * @format
  */
+/** @jsxRuntime classic */
+/** @jsx jsx */
 
 import "./myprofilepictures.css";
-import { useState, useEffect, MouseEvent } from "react";
+import { useState, useEffect } from "react";
 import firebase, { storage } from "../../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import { Cancel, Image } from "@material-ui/icons";
 import { Alert } from "react-bootstrap";
-import styled from "@emotion/styled";
 import { FunctionComponent } from "react";
+import { jsx } from "@emotion/react";
+import { myProfPicStyles } from "./MyProfilePicturesStyles";
 
 export const MyProfilePictures: FunctionComponent = () => {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [profilePictures, setProfilePictures] = useState<Array<string>>([]);
   const [error, setError] = useState("");
-
-  const PictureList = styled.ul`
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    grid-gap: 1em;
-  `;
-
-  const Picture = styled.img`
-    width: 170px;
-    height: 170px;
-    border-radius: 10px;
-    -webkit-box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
-    box-shadow: 4px 3px 6px 2px rgba(0, 0, 0, 0.76);
-    object-fit: cover;
-  `;
-
-  const AddPicture = styled.div`
-    width: 170px;
-    height: 170px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `;
-
-  const DeleteButton = styled.div`
-    position: relative;
-    top: 16px;
-    right: 10px;
-    cursor: pointer;
-  `;
-
-  const RemoveAlert = styled(Alert)`
-    margin-top: 40px;
-    margin-left: 20px;
-    width: 320px;
-    text-align: center;
-  `;
-
-  const AddPictureImage = styled(Image)`
-    transform: scale(3);
-    cursor: pointer;
-  `;
+  const {
+    list,
+    pictureStyle,
+    addPicture,
+    deleteButton,
+    removeAlert,
+    addPicImage,
+  } = myProfPicStyles;
 
   const docRef = firebase
     .firestore()
@@ -137,22 +105,22 @@ export const MyProfilePictures: FunctionComponent = () => {
   const pictures = profilePictures.map((picture, index) => {
     return (
       <li key={index}>
-        <DeleteButton onClick={() => removeImage(index)}>
+        <div css={deleteButton} onClick={() => removeImage(index)}>
           <Cancel />
-        </DeleteButton>
-        <Picture src={picture} alt={picture}></Picture>
+        </div>
+        <img css={pictureStyle} src={picture} alt={picture}></img>
       </li>
     );
   });
 
   return (
     <div>
-      <PictureList>
+      <ul css={list}>
         {pictures}
         <li key={profilePictures.length}>
-          <AddPicture>
+          <div css={addPicture}>
             <label htmlFor="single">
-              <AddPictureImage />
+              <Image css={addPicImage} />
             </label>
             <input
               disabled={loading}
@@ -160,10 +128,14 @@ export const MyProfilePictures: FunctionComponent = () => {
               id="single"
               onChange={handleImageUpload}
             />
-          </AddPicture>
+          </div>
         </li>
-      </PictureList>
-      {error && <RemoveAlert variant="danger">{error}</RemoveAlert>}
+      </ul>
+      {error && (
+        <Alert css={removeAlert} variant="danger">
+          {error}
+        </Alert>
+      )}
     </div>
   );
 };

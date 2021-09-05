@@ -1,9 +1,26 @@
 /** @format */
 
+/** @jsxRuntime classic */
+/** @jsx jsx */
+
 import { useState, useEffect } from "react";
 import firebase from "firebase";
-import styled from "@emotion/styled";
 import { FunctionComponent } from "react";
+import { css, jsx } from "@emotion/react";
+import { dateToString } from "../../Utilities";
+
+const profileInfoStyle = css`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+const text = css`
+  font-size: 23px;
+  margin-bottom: 10px;
+`;
 
 interface ProfileInfoProps {
   email: string;
@@ -15,30 +32,6 @@ export const ProfileInfo: FunctionComponent<ProfileInfoProps> = (props) => {
   const [date, setDate] = useState("");
   const [education, setEducation] = useState("");
   const [workplace, setWorkplace] = useState("");
-
-  const ProfileInfo = styled.div`
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: wrap;
-  `;
-
-  const ProfileText = styled.div`
-    font-size: 23px;
-    margin-bottom: 10px;
-  `;
-
-  const dateToString = (date: Date) => {
-    const day = date.getDate();
-    const dayString = day < 10 ? "0" + day : day;
-    const month = date.getMonth() + 1;
-    const monthString = month < 10 ? "0" + month : month;
-
-    const year = date.getFullYear();
-
-    return dayString + "/" + monthString + "/" + year;
-  };
 
   useEffect(() => {
     firebase
@@ -67,11 +60,11 @@ export const ProfileInfo: FunctionComponent<ProfileInfoProps> = (props) => {
 
   const information = profileInfo.map((info, index) => {
     return (
-      <ProfileText key={info.label}>
+      <div css={text} key={info.label}>
         {info.label}: {info.value}
-      </ProfileText>
+      </div>
     );
   });
 
-  return <ProfileInfo>{information}</ProfileInfo>;
+  return <div css={profileInfoStyle}>{information}</div>;
 };

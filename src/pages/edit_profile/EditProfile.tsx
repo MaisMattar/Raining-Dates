@@ -1,12 +1,17 @@
 /** @format */
 
+/** @jsxRuntime classic */
+/** @jsx jsx */
+
 import React, { FunctionComponent, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useRef } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
 import firebase from "../../firebase";
-import styled from "@emotion/styled";
+import { jsx } from "@emotion/react";
+import { editProfileStyles } from "./EditProfileStyles";
+import { formField } from "../../Utilities";
 
 export const EditProfile: FunctionComponent = () => {
   const firstnameRef = useRef<HTMLInputElement | null>(null);
@@ -18,56 +23,10 @@ export const EditProfile: FunctionComponent = () => {
   const { currentUser, updatePassword } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { container, left, right, mainText, saveButton, editAlert } =
+    editProfileStyles;
 
-  const Container = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-  `;
-
-  const Left = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 2;
-  `;
-
-  const MainText = styled.div`
-    text-align: center;
-    margin-top: 30px;
-    font-size: 30px;
-    color: rgb(62, 121, 170);
-    font-weight: bold;
-  `;
-
-  const Right = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 3;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    flex-direction: column;
-  `;
-
-  const SaveButton = styled(Button)`
-    height: 45px;
-    width: 100%;
-    border-radius: 10px;
-    margin-top: 20px;
-    margin-bottom: 15px;
-  `;
-
-  const EditAlert = styled(Alert)`
-    width: 280px;
-    text-align: center;
-    font-size: 18px;
-    margin-top: 10px;
-  `;
-
-  const profileInfo = [
+  const profileInfo: Array<formField> = [
     {
       id: "firstname",
       label: "First Name",
@@ -175,22 +134,29 @@ export const EditProfile: FunctionComponent = () => {
   }
 
   return (
-    <>
-      <Container>
-        <Left>
-          <MainText>Edit Your Profile</MainText>
-        </Left>
-        <Right>
-          <Form onSubmit={handleSubmit}>
-            {registerInfoInputs}
-            <SaveButton id="submitbutton" disabled={loading} type="submit">
-              Save Changes
-            </SaveButton>
-          </Form>
-          <Link to="/myprofile">Cancel</Link>
-          {error && <EditAlert variant="danger">{error}</EditAlert>}
-        </Right>
-      </Container>
-    </>
+    <div css={container}>
+      <div css={left}>
+        <div css={mainText}>Edit Your Profile</div>
+      </div>
+      <div css={right}>
+        <Form onSubmit={handleSubmit}>
+          {registerInfoInputs}
+          <Button
+            css={saveButton}
+            id="submitbutton"
+            disabled={loading}
+            type="submit"
+          >
+            Save Changes
+          </Button>
+        </Form>
+        <Link to="/myprofile">Cancel</Link>
+        {error && (
+          <Alert css={editAlert} variant="danger">
+            {error}
+          </Alert>
+        )}
+      </div>
+    </div>
   );
 };

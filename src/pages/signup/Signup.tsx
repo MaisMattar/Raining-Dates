@@ -2,12 +2,17 @@
  * @format
  */
 
+/** @jsxRuntime classic */
+/** @jsx jsx */
+
 import { Button, Form, Alert } from "react-bootstrap";
-import { FunctionComponent, useRef, useState } from "react";
+import { FunctionComponent, useRef, useState, MutableRefObject } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import firebase, { storage } from "../../firebase";
-import styled from "@emotion/styled";
+import { css, jsx } from "@emotion/react";
+import { signupStyles } from "./SignupStyles";
+import { formField } from "../../Utilities";
 
 export const Signup: FunctionComponent = () => {
   const firstnameRef = useRef<HTMLInputElement | null>(null);
@@ -20,96 +25,20 @@ export const Signup: FunctionComponent = () => {
   const [loading, setLoading] = useState(true);
   const [image, setImage] = useState<File | null>(null);
   const history = useHistory();
+  const {
+    container,
+    wrapper,
+    part,
+    logo,
+    description,
+    box,
+    signupButton,
+    signupAlert,
+    uploadText,
+    uploadButton,
+  } = signupStyles;
 
-  const Container = styled.div`
-    position: absolute;
-    top: auto;
-    width: 100%;
-    height: 100%;
-    background-image: url("https://www.juneauempire.com/wp-content/uploads/2018/11/6044053_web1_rodion-kutsaev-760882-unsplash.jpg");
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-  `;
-
-  const Wrapper = styled.div`
-    width: 70%;
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-  `;
-
-  const Part = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  `;
-
-  const Logo = styled.h3`
-    font-size: 50px;
-    font-weight: 800;
-    color: white;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px black;
-  `;
-
-  const Description = styled.span`
-    font-size: 24px;
-    color: white;
-    font-weight: bold;
-    text-shadow: 2px 2px black;
-  `;
-
-  const Box = styled.div`
-    height: 500px;
-    width: 370px;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.664);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    font-size: 17px;
-  `;
-
-  const SignUpButton = styled(Button)`
-    height: 45px;
-    width: 100%;
-    border-radius: 10px;
-    margin-top: 15px;
-  `;
-
-  const SignUpAlert = styled(Alert)`
-    width: 370px;
-    text-align: center;
-    font-size: 18px;
-  `;
-
-  const UploadButton = styled.div`
-    height: 35px;
-    width: 150px;
-    background-color: royalblue;
-    border-radius: 3px;
-    margin-top: 10px;
-    cursor: pointer;
-  `;
-
-  const UploadText = styled.div`
-    font-size: 17px;
-    text-align: center;
-    color: white;
-    padding: 5px 0;
-  `;
-
-  const CenteredText = styled.div`
-    textalign: "center";
-  `;
-
-  const registerInfo = [
+  const registerInfo: Array<formField> = [
     { id: "firstname", label: "First Name", type: "text", ref: firstnameRef },
     { id: "lastname", label: "Last Name", type: "text", ref: lastnameRef },
     { id: "date", label: "Date of Birth", type: "date", ref: dateRef },
@@ -244,35 +173,43 @@ export const Signup: FunctionComponent = () => {
   }
 
   return (
-    <Container>
-      <Wrapper>
-        <Part>
-          <Logo>Raining Dates</Logo>
-          <Description>Find your next date</Description>
-        </Part>
-        <Part>
-          {error && <SignUpAlert variant="danger">{error}</SignUpAlert>}
-          <Box>
+    <div css={container}>
+      <div css={wrapper}>
+        <div css={part}>
+          <h3 css={logo}>Raining Dates</h3>
+          <span css={description}>Find your next date</span>
+        </div>
+        <div css={part}>
+          {error && (
+            <Alert css={signupAlert} variant="danger">
+              {error}
+            </Alert>
+          )}
+          <div css={box}>
             <Form onSubmit={handleSubmit}>
               {registerInfoInputs}
               <div>
                 <label htmlFor="single">
-                  <UploadButton>
-                    <UploadText>Upload Image</UploadText>
-                  </UploadButton>
+                  <div css={uploadButton}>
+                    <div css={uploadText}>Upload Image</div>
+                  </div>
                 </label>
                 <input type="file" id="single" onChange={handleChange} />
               </div>
-              <SignUpButton disabled={loading} type="submit">
+              <Button css={signupButton} disabled={loading} type="submit">
                 Sign Up
-              </SignUpButton>
+              </Button>
             </Form>
-            <CenteredText>
+            <div
+              css={css`
+                text-align: center;
+              `}
+            >
               Already have an account? <Link to="/login">Log In</Link>
-            </CenteredText>
-          </Box>
-        </Part>
-      </Wrapper>
-    </Container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

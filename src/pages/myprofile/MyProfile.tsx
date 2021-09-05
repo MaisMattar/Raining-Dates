@@ -1,66 +1,44 @@
 /**
  * @format
  */
+/** @jsxRuntime classic */
+/** @jsx jsx */
 
 import { Button } from "react-bootstrap";
 import { MyProfileInfo } from "../../components/my_profile_info/MyProfileInfo";
 import { MyProfilePictures } from "../../components/my_profile_pictures/MyProfilePictures";
 import { useHistory } from "react-router-dom";
-import styled from "@emotion/styled";
-import { FunctionComponent } from "react";
-import { MouseEvent } from "react";
+import { FunctionComponent, MouseEvent } from "react";
+import { css, jsx } from "@emotion/react";
+import { myProfileStyles } from "./MyProfileStyles";
 
 export const MyProfile: FunctionComponent = () => {
   const history = useHistory();
 
-  const Container = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    flex-wrap: wrap;
-  `;
-
-  const MainText = styled.div`
-    text-align: center;
-    margin-top: 30px;
-    font-size: 30px;
-    color: rgb(62, 121, 170);
-    font-weight: bold;
-  `;
-
-  const Left = styled.div`
-    flex: 1;
-  `;
-
-  const Right = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  `;
-  const EditButton = styled(Button)`
-    height: 45px;
-    width: 150px;
-    border-radius: 10px;
-    margin-top: 15px;
-  `;
+  const { container, mainText, right, editButton } = myProfileStyles;
 
   function handleEditProfile(event: MouseEvent) {
     history.push("/edit-profile");
   }
 
   return (
-    <>
-      <MainText>Your Profile</MainText>
-      <Container>
-        <Left>
+    <div>
+      <div css={mainText}>Your Profile</div>
+      <div css={container}>
+        <div
+          css={css`
+            flex: 1;
+          `}
+        >
           <MyProfilePictures />
-        </Left>
-        <Right>
+        </div>
+        <div css={right}>
           <MyProfileInfo />
-          <EditButton onClick={handleEditProfile}>Edit Profile</EditButton>
-        </Right>
-      </Container>
-    </>
+          <Button css={editButton} onClick={handleEditProfile}>
+            Edit Profile
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };

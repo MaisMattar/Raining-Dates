@@ -1,8 +1,11 @@
 /** @format */
 
+/** @jsxRuntime classic */
+/** @jsx jsx */
+
 import { Groups } from "../../components/groups/Groups";
-import styled from "@emotion/styled";
 import { FunctionComponent } from "react";
+import { css, jsx } from "@emotion/react";
 
 interface Group {
   text: string;
@@ -14,20 +17,20 @@ interface HomeProps {
   ageGroups: Array<Group>;
 }
 
-export const Home: FunctionComponent<HomeProps> = (props) => {
-  const HomeText = styled.div`
-    text-align: center;
-    margin-top: 30px;
-    color: rgb(62, 121, 170);
-    font-size: 30px;
-  `;
+const homeText = css`
+  text-align: center;
+  margin-top: 30px;
+  color: rgb(62, 121, 170);
+  font-size: 30px;
+`;
 
+export const Home: FunctionComponent<HomeProps> = (props) => {
   return (
-    <>
-      <HomeText>Pick your preferred age group</HomeText>
+    <div>
+      <div css={homeText}>Pick your preferred age group</div>
       <div>
         <Groups ageGroups={props.ageGroups} />
       </div>
-    </>
+    </div>
   );
 };
