@@ -4,10 +4,10 @@
 /** @jsx jsx */
 
 import { useState, useEffect } from "react";
-import firebase from "firebase";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
-import { dateToString } from "../../Utilities";
+import { getProfileInfo, userInfo } from "../../firebase_util";
+import { ProfileInfoType, ProfileInfoProps } from "../../Utilities";
 
 const profileInfoStyle = css`
   display: flex;
@@ -22,10 +22,6 @@ const text = css`
   margin-bottom: 10px;
 `;
 
-interface ProfileInfoProps {
-  email: string;
-}
-
 export const ProfileInfo: FunctionComponent<ProfileInfoProps> = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -33,34 +29,30 @@ export const ProfileInfo: FunctionComponent<ProfileInfoProps> = (props) => {
   const [education, setEducation] = useState("");
   const [workplace, setWorkplace] = useState("");
 
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(props.email)
-      .get()
-      .then((doc) => {
-        const documentData = doc.data();
-        const date = documentData!.date_of_birth.toDate();
-        setFirstName(documentData!.first_name);
-        setLastName(documentData!.last_name);
-        setDate(dateToString(date));
-        setEducation(documentData!.education);
-        setWorkplace(documentData!.workplace);
-      });
-  }, [props.email]);
+  const getUserInfo = async () => {
+    const userInfoData: userInfo = await getProfileInfo(props.email);
+    setFirstName(userInfoData.firstName);
+    setLastName(userInfoData.lastName);
+    setDate(userInfoData.dateOfBirth);
+    setEducation(userInfoData.education);
+    setWorkplace(userInfoData.workplace);
+  };
 
-  const profileInfo = [
-    { label: "First Name", value: firstName },
-    { label: "Last Name", value: lastName },
-    { label: "Date of Birth", value: date },
-    { label: "Education", value: education },
-    { label: "Workplace", value: workplace },
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const profileInfo: Array<ProfileInfoType> = [
+    { id: "firstname", label: "First Name", value: firstName },
+    { id: "lastname", label: "Last Name", value: lastName },
+    { id: "dateofbirth", label: "Date of Birth", value: date },
+    { id: "education", label: "Education", value: education },
+    { id: "workplace", label: "Workplace", value: workplace },
   ];
 
   const information = profileInfo.map((info, index) => {
     return (
-      <div css={text} key={info.label}>
+      <div css={text} key={info.id}>
         {info.label}: {info.value}
       </div>
     );

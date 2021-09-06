@@ -3,6 +3,16 @@
 import { MutableRefObject } from "react";
 import firebase from "firebase";
 
+export interface ProfileInfoProps {
+  email: string;
+}
+
+export interface ProfileInfoType {
+  id: string;
+  label: string;
+  value: string;
+}
+
 export interface formField {
   id: string;
   label: string;

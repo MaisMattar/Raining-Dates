@@ -66,9 +66,6 @@ export const AuthProvider: FunctionComponent = (props) => {
     logout,
     updateEmail,
     updatePassword,
-    // lang: "de",
-    // authenticated: true,
-    // theme: "light",
   };
 
   return (
