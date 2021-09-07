@@ -10,12 +10,19 @@ import { ProfileInfo } from "../../components/profile_info/ProfileInfo";
 import { Favorite, NotInterested } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
-import firebase from "firebase";
 import { useState, useEffect, FunctionComponent, MouseEvent } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import styled from "@emotion/styled";
 import { jsx } from "@emotion/react";
 import { profileStyles } from "./ProfileStyles";
+import {
+  getProfileInfo,
+  userInfo,
+  checkIfInterested,
+  checkIfNotInterested,
+  updateNotInterested,
+  updateInterested,
+} from "../../firebase_util";
 
 type ProfileParams = {
   email: string;
@@ -41,80 +48,43 @@ export const Profile: FunctionComponent = () => {
     transform: ${notInterested ? "scale(2)" : "scale(1.8)"};
   `;
 
-  const checkIfNotInterested = () => {
-    firebase
-      .firestore()
-      .collection("notInterested")
-      .doc(currentUser.email)
-      .get()
-      .then((doc) => {
-        const documentData = doc.data();
-        if (documentData!.profiles.includes(email)) setNotInterested(true);
-      });
+  const setFullName = async () => {
+    const profileInfo: userInfo = await getProfileInfo(email);
+    setFirstName(profileInfo.firstName);
+    setLastName(profileInfo.lastName);
   };
 
-  const checkIfInterested = () => {
-    firebase
-      .firestore()
-      .collection("interested")
-      .doc(currentUser.email)
-      .get()
-      .then((doc) => {
-        const documentData = doc.data();
-        if (documentData!.profiles.includes(email)) setInterested(true);
-        else checkIfNotInterested();
-      });
-  };
-
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(email)
-      .get()
-      .then((doc) => {
-        console.log("log");
-        const documentData = doc.data();
-        setFirstName(documentData!.first_name);
-        setLastName(documentData!.last_name);
-      });
-    checkIfInterested();
-  }, []);
-
-  const addProfileToCollection = (
-    collectionToAdd: string,
-    collectionToRemove: string
-  ) => {
-    firebase
-      .firestore()
-      .collection(collectionToAdd)
-      .doc(currentUser.email)
-      .update({
-        profiles: firebase.firestore.FieldValue.arrayUnion(email),
-      });
-
-    firebase
-      .firestore()
-      .collection(collectionToRemove)
-      .doc(currentUser.email)
-      .update({
-        profiles: firebase.firestore.FieldValue.arrayRemove(email),
-      });
-  };
-
-  const handleInterested = (e: MouseEvent) => {
+  const setInterest = async () => {
+    const interested = await checkIfInterested(currentUser.email, email);
+    console.log("interested = ", interested);
+    setInterested(interested);
     if (!interested) {
-      setInterested(true);
-      setNotInterested(false);
-      addProfileToCollection("interested", "notInterested");
+      const notInterested = await checkIfNotInterested(
+        currentUser.email,
+        email
+      );
+      setNotInterested(notInterested);
     }
   };
 
-  const handleNotInterested = (e: MouseEvent) => {
+  useEffect(() => {
+    setFullName();
+    setInterest();
+  }, []);
+
+  const handleInterested = async (e: MouseEvent) => {
+    if (!interested) {
+      await updateInterested(currentUser.email, email);
+      setInterested(true);
+      setNotInterested(false);
+    }
+  };
+
+  const handleNotInterested = async (e: MouseEvent) => {
     if (!notInterested) {
+      await updateNotInterested(currentUser.email, email);
       setNotInterested(true);
       setInterested(false);
-      addProfileToCollection("notInterested", "interested");
     }
   };
 

@@ -3,9 +3,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import firebase from "firebase";
 import { useState, useEffect, FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
+import { getProfilePictures } from "../../firebase_util";
 
 const pictureList = css`
   list-style: none;
@@ -32,23 +32,14 @@ export const ProfilePictures: FunctionComponent<ProfilePicturesProps> = (
 ) => {
   const [profilePictures, setProfilePictures] = useState([]);
 
-  useEffect(() => {
-    const docRef = firebase.firestore().collection("users").doc(props.email);
+  const setUserProfilePictures = async () => {
+    const images = await getProfilePictures(props.email);
+    setProfilePictures(images);
+  };
 
-    docRef
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          const documentData = doc.data();
-          setProfilePictures(documentData!.images);
-        } else {
-          console.log("No such document!");
-        }
-      })
-      .catch((error) => {
-        console.log("Error getting document:", error);
-      });
-  }, [props.email]);
+  useEffect(() => {
+    setUserProfilePictures();
+  }, []);
 
   const pictures = profilePictures.map((picture, index) => {
     return (

@@ -10,11 +10,11 @@ import { auth } from "../../firebase";
 
 type ContextProps = {
   currentUser: any;
-  signup: any;
-  login: any;
+  signup: (email: string, password: string) => any;
+  login: (email: string, password: string) => any;
   logout: any;
   updateEmail: any;
-  updatePassword: any;
+  updatePassword: (password: string) => any;
 };
 
 const AuthContext = React.createContext<Partial<ContextProps>>({});

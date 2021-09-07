@@ -6,12 +6,12 @@
 /** @jsx jsx */
 
 import { Link } from "react-router-dom";
-import firebase from "firebase";
 import { useState, useEffect, FunctionComponent } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { jsx } from "@emotion/react";
 import { ageGroupStyles } from "./AgeGroupStyles";
 import { getDateInTimestamp } from "../../Utilities";
+import { getAgeGroupProfiles, ageGroupProfile } from "../../firebase_util";
 
 interface Group {
   text: string;
@@ -24,39 +24,35 @@ interface AgeGroupProps {
 }
 
 export const AgeGroup: FunctionComponent<AgeGroupProps> = (props) => {
-  const [peopleProfiles, setPeopleProfiles] = useState<
-    Array<firebase.firestore.DocumentData>
-  >([]);
+  const [peopleProfiles, setPeopleProfiles] = useState<Array<ageGroupProfile>>(
+    []
+  );
+
   const { currentUser } = useAuth();
   const { text, peopleList, peoplePicture, listItem } = ageGroupStyles;
 
+  const setAgeGroupProfiles = async () => {
+    const people = await getAgeGroupProfiles(
+      getDateInTimestamp(props.ageGroup.startAge),
+      getDateInTimestamp(props.ageGroup.endAge)
+    );
+    setPeopleProfiles(people);
+  };
+
   useEffect(() => {
-    firebase
-      .firestore()
-      .collection("users")
-      .where("date_of_birth", "<", getDateInTimestamp(props.ageGroup.startAge))
-      .where("date_of_birth", ">=", getDateInTimestamp(props.ageGroup.endAge))
-      .get()
-      .then((querySnapshot) => {
-        const people: Array<firebase.firestore.DocumentData> = [];
-        querySnapshot.forEach((doc) => {
-          const documentData = doc.data();
-          if (documentData.email !== currentUser.email) {
-            people.push(documentData);
-          }
-        });
-        setPeopleProfiles(people);
-      });
-  }, [props.ageGroup.startAge, props.ageGroup.endAge, currentUser.email]);
+    setAgeGroupProfiles();
+  }, []);
 
   const pictures = peopleProfiles.map((personProfile, index) => {
-    return (
-      <li css={listItem} key={personProfile.email}>
-        <Link to={"/profile/" + personProfile.email}>
-          <img css={peoplePicture} src={personProfile.images[0]}></img>
-        </Link>
-      </li>
-    );
+    if (personProfile.email !== currentUser.email) {
+      return (
+        <li css={listItem} key={personProfile.email}>
+          <Link to={"/profile/" + personProfile.email}>
+            <img css={peoplePicture} src={personProfile.image}></img>
+          </Link>
+        </li>
+      );
+    }
   });
 
   return (

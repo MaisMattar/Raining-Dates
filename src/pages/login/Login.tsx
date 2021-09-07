@@ -11,6 +11,8 @@ import { useAuth } from "../../components/contexts/AuthContext";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
 import { loginStyles } from "./LoginStyles";
+import { performLogin } from "../../firebase_util";
+import { formField } from "../../Utilities";
 
 export const Login: FunctionComponent = () => {
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -30,7 +32,7 @@ export const Login: FunctionComponent = () => {
     loginAlert,
   } = loginStyles;
 
-  const loginInfo = [
+  const loginInfo: Array<formField> = [
     { id: "email", label: "Email", type: "email", ref: emailRef },
     { id: "password", label: "Password", type: "password", ref: passwordRef },
   ];
@@ -46,19 +48,20 @@ export const Login: FunctionComponent = () => {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    try {
-      setError("");
-      setLoading(true);
-      if (
-        emailRef !== null &&
-        emailRef.current !== null &&
-        passwordRef !== null &&
-        passwordRef.current !== null
-      ) {
-        await login(emailRef.current.value, passwordRef.current.value);
-      }
+    setError("");
+    setLoading(true);
+
+    let loginResult = false;
+
+    loginResult = await performLogin(
+      emailRef!.current!.value,
+      passwordRef!.current!.value,
+      login!
+    );
+
+    if (loginResult) {
       history.push("/");
-    } catch {
+    } else {
       setError("Failed to log in");
       setLoading(false);
     }

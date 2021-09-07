@@ -5,13 +5,17 @@
 
 import React, { FunctionComponent, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { useAuth } from "../../components/contexts/AuthContext";
-import firebase from "../../firebase";
 import { jsx } from "@emotion/react";
 import { editProfileStyles } from "./EditProfileStyles";
 import { formField } from "../../Utilities";
+import {
+  getProfileInfo,
+  updateUser,
+  updateUserPassword,
+} from "../../firebase_util";
 
 export const EditProfile: FunctionComponent = () => {
   const firstnameRef = useRef<HTMLInputElement | null>(null);
@@ -59,29 +63,19 @@ export const EditProfile: FunctionComponent = () => {
     },
   ];
 
-  const docRef = firebase
-    .firestore()
-    .collection("users")
-    .doc(currentUser.email);
+  const initFormFields = async () => {
+    const profileInfo = await getProfileInfo(currentUser.email);
+    firstnameRef!.current!.value = profileInfo!.firstName;
+    lastnameRef!.current!.value = profileInfo!.lastName;
+    educationRef!.current!.value =
+      profileInfo!.education === undefined ? "" : profileInfo!.education;
+    workplaceRef!.current!.value =
+      profileInfo!.workplace === undefined ? "" : profileInfo!.workplace;
+  };
 
-  docRef
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        const documentData = doc.data();
-        firstnameRef!.current!.value = documentData!.first_name;
-        lastnameRef!.current!.value = documentData!.last_name;
-        educationRef!.current!.value =
-          documentData!.education === undefined ? "" : documentData!.education;
-        workplaceRef!.current!.value =
-          documentData!.workplace === undefined ? "" : documentData!.workplace;
-      } else {
-        console.log("No such document!");
-      }
-    })
-    .catch((error) => {
-      console.log("Error getting document:", error);
-    });
+  useEffect(() => {
+    initFormFields();
+  }, []);
 
   const registerInfoInputs = profileInfo.map((info, index) => {
     return (
@@ -100,38 +94,26 @@ export const EditProfile: FunctionComponent = () => {
     );
   });
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    const promises = [];
-
-    if (
-      passwordRef!.current!.value !== "" &&
-      passwordRef!.current!.value !== currentUser.pasword
-    ) {
-      promises.push(updatePassword(passwordRef!.current!.value));
-    }
-
-    promises.push(
-      docRef.update({
-        first_name: firstnameRef!.current!.value,
-        last_name: lastnameRef!.current!.value,
-        education: educationRef!.current!.value,
-        workplace: workplaceRef!.current!.value,
-      })
+    await updateUserPassword(
+      passwordRef!.current!.value,
+      currentUser.pasword,
+      updatePassword!
     );
 
-    Promise.all(promises)
-      .then(() => {})
-      .catch(() => {
-        setError("Failed to update profile");
-      })
-      .finally(() => {
-        history.push("/myprofile");
-      });
-  }
+    await updateUser(currentUser.email, {
+      first_name: firstnameRef!.current!.value,
+      last_name: lastnameRef!.current!.value,
+      education: educationRef!.current!.value,
+      workplace: workplaceRef!.current!.value,
+    });
+
+    history.push("/myprofile");
+  };
 
   return (
     <div css={container}>

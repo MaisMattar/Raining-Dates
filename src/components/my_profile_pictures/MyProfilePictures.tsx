@@ -6,13 +6,17 @@
 
 import "./myprofilepictures.css";
 import { useState, useEffect } from "react";
-import firebase, { storage } from "../../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import { Cancel, Image } from "@material-ui/icons";
 import { Alert } from "react-bootstrap";
 import { FunctionComponent } from "react";
 import { jsx } from "@emotion/react";
 import { myProfPicStyles } from "./MyProfilePicturesStyles";
+import {
+  getProfilePictures,
+  updateUser,
+  uploadImageToStorage,
+} from "../../firebase_util";
 
 export const MyProfilePictures: FunctionComponent = () => {
   const { currentUser } = useAuth();
@@ -28,28 +32,16 @@ export const MyProfilePictures: FunctionComponent = () => {
     addPicImage,
   } = myProfPicStyles;
 
-  const docRef = firebase
-    .firestore()
-    .collection("users")
-    .doc(currentUser.email);
+  const setMyProfilePictures = async () => {
+    const images = await getProfilePictures(currentUser.email);
+    setProfilePictures(images);
+  };
 
   useEffect(() => {
-    docRef
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          const documentData = doc.data();
-          setProfilePictures(documentData!.images);
-        } else {
-          console.log("No such document!");
-        }
-      })
-      .catch((error) => {
-        console.log("Error getting document:", error);
-      });
+    setMyProfilePictures();
   }, []);
 
-  function removeImage(imageIndex: number) {
+  const removeImage = async (imageIndex: number) => {
     if (profilePictures.length <= 1) {
       setError("You must have at least one photo!");
       setTimeout(function () {
@@ -57,49 +49,40 @@ export const MyProfilePictures: FunctionComponent = () => {
       }, 5000);
       return;
     }
+
     const profilePicsCopy = [...profilePictures];
     profilePicsCopy.splice(imageIndex, 1);
-    docRef
-      .update({
-        images: profilePicsCopy,
-      })
-      .then(() => setProfilePictures(profilePicsCopy));
-  }
+    await updateUser(currentUser.email, { images: profilePicsCopy });
+    setProfilePictures(profilePicsCopy);
+  };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadImage = async (image: File) => {
+    const imageUrl = await uploadImageToStorage(
+      currentUser.email + image.name,
+      image
+    );
+    return imageUrl;
+  };
+
+  const addImageToProfile = async (imageUrl: string) => {
+    const profilePicsCopy = [...profilePictures];
+    profilePicsCopy.push(imageUrl);
+    await updateUser(currentUser.email, { images: profilePicsCopy });
+    setProfilePictures(profilePicsCopy);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null || e.target.files[0] === null) {
       return;
     }
     const currImage = e.target.files[0];
     setLoading(true);
-    const imageName = currentUser.email + currImage.name;
 
-    const uploadImage = storage.ref(`images/${imageName}`).put(currImage);
-    uploadImage.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        storage
-          .ref("images")
-          .child(imageName)
-          .getDownloadURL()
-          .then((url) => {
-            const profilePicsCopy = [...profilePictures];
-            profilePicsCopy.push(url);
-            docRef
-              .update({
-                images: profilePicsCopy,
-              })
-              .then(() => {
-                setLoading(false);
-                setProfilePictures(profilePicsCopy);
-              });
-          });
-      }
-    );
+    const imageUrl = await uploadImage(currImage);
+
+    await addImageToProfile(imageUrl);
+
+    setLoading(false);
   };
 
   const pictures = profilePictures.map((picture, index) => {

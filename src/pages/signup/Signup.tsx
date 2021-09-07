@@ -6,13 +6,14 @@
 /** @jsx jsx */
 
 import { Button, Form, Alert } from "react-bootstrap";
-import { FunctionComponent, useRef, useState } from "react";
+import { FunctionComponent, useRef, useState, useEffect } from "react";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import firebase, { storage } from "../../firebase";
 import { css, jsx } from "@emotion/react";
 import { signupStyles } from "./SignupStyles";
 import { formField, parseDate, checkIfLegalAge } from "../../Utilities";
+import { handleSignup, userInfo, createProfile } from "../../firebase_util";
 
 export const Signup: FunctionComponent = () => {
   const firstnameRef = useRef<HTMLInputElement | null>(null);
@@ -70,73 +71,6 @@ export const Signup: FunctionComponent = () => {
     setLoading(false);
   };
 
-  const createProfileFirebaseDoc = () => {
-    setError("");
-    const docRef = firebase
-      .firestore()
-      .collection("users")
-      .doc(emailRef!.current!.value);
-
-    const imageName = emailRef!.current!.value + image!.name;
-
-    const uploadImage = storage.ref(`images/${imageName}`).put(image!);
-    uploadImage.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        storage
-          .ref("images")
-          .child(imageName)
-          .getDownloadURL()
-          .then((url) => {
-            docRef
-              .set({
-                first_name: firstnameRef!.current!.value,
-                last_name: lastnameRef!.current!.value,
-                date_of_birth: parseDate(dateRef!.current!.value),
-                email: emailRef!.current!.value,
-                images: [url],
-                education: "",
-                workplace: "",
-              })
-              .then(() => {
-                console.log("Document added succesfully!");
-                history.push("/");
-              })
-              .catch((e: any) => {
-                setError("Failed to create an account " + e);
-              });
-            setLoading(false);
-          });
-      }
-    );
-  };
-
-  const handleEmailPasswordSignUp = async () => {
-    try {
-      setError("");
-      setLoading(true);
-      await signup(emailRef!.current!.value, passwordRef!.current!.value);
-    } catch (e: any) {
-      setError("Failed to create an account. " + e.message);
-      setLoading(false);
-      return;
-    }
-  };
-
-  const createInterestsFirebaseDoc = (collectionName: string) => {
-    firebase
-      .firestore()
-      .collection(collectionName)
-      .doc(emailRef!.current!.value)
-      .set({
-        profiles: [],
-      });
-  };
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -145,14 +79,34 @@ export const Signup: FunctionComponent = () => {
       return;
     }
 
-    createProfileFirebaseDoc();
-    if (error !== "") return;
+    const userInfo: userInfo = {
+      firstName: firstnameRef!.current!.value,
+      lastName: lastnameRef!.current!.value,
+      dateOfBirth: dateRef!.current!.value,
+      education: "",
+      workplace: "",
+      email: emailRef!.current!.value,
+    };
 
-    handleEmailPasswordSignUp();
-    if (error !== "") return;
+    setError("");
 
-    createInterestsFirebaseDoc("interested");
-    createInterestsFirebaseDoc("notInterested");
+    const createProfRes = await createProfile(userInfo, image!);
+    if (!createProfRes) {
+      setError("Failed to create account!");
+      return;
+    }
+
+    const signupRes = await handleSignup(
+      emailRef!.current!.value,
+      passwordRef!.current!.value,
+      signup!
+    );
+    if (!signupRes) {
+      setError("Failed to create account!");
+      return;
+    }
+
+    history.push("/");
   }
 
   return (
