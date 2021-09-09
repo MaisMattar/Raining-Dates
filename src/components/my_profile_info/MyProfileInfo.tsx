@@ -31,11 +31,6 @@ const initialState = {
 export const MyProfileInfo: FunctionComponent = () => {
   const { currentUser } = useAuth();
   const [myProfileInfo, setMyProfileInfo] = useState(initialState);
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [date, setDate] = useState("");
-  // const [education, setEducation] = useState("");
-  // const [workplace, setWorkplace] = useState("");
 
   const profileInfo: Array<ProfileInfoType> = [
     { id: "firstname", label: "First Name", value: myProfileInfo.firstName },
@@ -47,7 +42,6 @@ export const MyProfileInfo: FunctionComponent = () => {
   ];
 
   const getUserInfo = async () => {
-    console.log("yaaay");
     const userInfoData: userInfo = await getProfileInfo(currentUser.email);
     setMyProfileInfo({
       firstName: userInfoData.firstName,
@@ -56,11 +50,6 @@ export const MyProfileInfo: FunctionComponent = () => {
       education: userInfoData.education,
       workplace: userInfoData.workplace,
     });
-    // setFirstName(userInfoData.firstName);
-    // setLastName(userInfoData.lastName);
-    // setDate(userInfoData.dateOfBirth);
-    // setEducation(userInfoData.education);
-    // setWorkplace(userInfoData.workplace);
   };
 
   useEffect(() => {
