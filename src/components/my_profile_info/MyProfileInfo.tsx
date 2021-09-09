@@ -1,7 +1,7 @@
 /** @format */
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
@@ -20,30 +20,47 @@ const profileInfoStyle = css`
   flex-wrap: wrap;
 `;
 
+const initialState = {
+  firstName: "",
+  lastName: "",
+  date: "",
+  education: "",
+  workplace: "",
+};
+
 export const MyProfileInfo: FunctionComponent = () => {
   const { currentUser } = useAuth();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [date, setDate] = useState("");
-  const [education, setEducation] = useState("");
-  const [workplace, setWorkplace] = useState("");
+  const [myProfileInfo, setMyProfileInfo] = useState(initialState);
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
+  // const [date, setDate] = useState("");
+  // const [education, setEducation] = useState("");
+  // const [workplace, setWorkplace] = useState("");
 
   const profileInfo: Array<ProfileInfoType> = [
-    { id: "firstname", label: "First Name", value: firstName },
-    { id: "lastname", label: "Last Name", value: lastName },
-    { id: "date", label: "Date of Birth", value: date },
+    { id: "firstname", label: "First Name", value: myProfileInfo.firstName },
+    { id: "lastname", label: "Last Name", value: myProfileInfo.lastName },
+    { id: "date", label: "Date of Birth", value: myProfileInfo.date },
     { id: "email", label: "Email", value: currentUser.email },
-    { id: "education", label: "Education", value: education },
-    { id: "workplace", label: "Workplace", value: workplace },
+    { id: "education", label: "Education", value: myProfileInfo.education },
+    { id: "workplace", label: "Workplace", value: myProfileInfo.workplace },
   ];
 
   const getUserInfo = async () => {
+    console.log("yaaay");
     const userInfoData: userInfo = await getProfileInfo(currentUser.email);
-    setFirstName(userInfoData.firstName);
-    setLastName(userInfoData.lastName);
-    setDate(userInfoData.dateOfBirth);
-    setEducation(userInfoData.education);
-    setWorkplace(userInfoData.workplace);
+    setMyProfileInfo({
+      firstName: userInfoData.firstName,
+      lastName: userInfoData.lastName,
+      date: userInfoData.dateOfBirth,
+      education: userInfoData.education,
+      workplace: userInfoData.workplace,
+    });
+    // setFirstName(userInfoData.firstName);
+    // setLastName(userInfoData.lastName);
+    // setDate(userInfoData.dateOfBirth);
+    // setEducation(userInfoData.education);
+    // setWorkplace(userInfoData.workplace);
   };
 
   useEffect(() => {
