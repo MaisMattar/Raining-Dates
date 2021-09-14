@@ -6,7 +6,7 @@
 
 import { AccountBox, Chat, ExitToApp } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
-import { useAuth } from "../../components/contexts/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
 import { topbarStyles } from "./TopbarStyles";

@@ -6,7 +6,7 @@
 import { useState, useEffect } from "react";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
-import { getProfileInfo, userInfo } from "../../firebase_util";
+import { getProfileInfo, userInfo } from "../../FirebaseUtil";
 import { ProfileInfoType, ProfileInfoProps } from "../../Utilities";
 
 const profileInfoStyle = css`

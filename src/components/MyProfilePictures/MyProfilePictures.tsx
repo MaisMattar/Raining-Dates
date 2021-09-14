@@ -6,7 +6,7 @@
 
 import "./myprofilepictures.css";
 import { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 import { Cancel, Image } from "@material-ui/icons";
 import { Alert } from "react-bootstrap";
 import { FunctionComponent } from "react";
@@ -16,7 +16,7 @@ import {
   getProfilePictures,
   updateUser,
   uploadImageToStorage,
-} from "../../firebase_util";
+} from "../../FirebaseUtil";
 
 export const MyProfilePictures: FunctionComponent = () => {
   const { currentUser } = useAuth();

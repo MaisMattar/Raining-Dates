@@ -3,7 +3,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { Groups } from "../../components/groups/Groups";
+import { Groups } from "../../Components/Groups/Groups";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
 

@@ -2,10 +2,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { useState, useEffect, useReducer } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
-import { getProfileInfo, userInfo } from "../../firebase_util";
+import { getProfileInfo, userInfo } from "../../FirebaseUtil";
 import { ProfileInfoType } from "../../Utilities";
 
 const profileText = css`

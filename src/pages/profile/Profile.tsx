@@ -5,13 +5,13 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { ProfilePictures } from "../../components/profile_pictures/ProfilePictures";
-import { ProfileInfo } from "../../components/profile_info/ProfileInfo";
+import { ProfilePictures } from "../../Components/ProfilePictures/ProfilePictures";
+import { ProfileInfo } from "../../Components/ProfileInfo/ProfileInfo";
 import { Favorite, NotInterested } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, FunctionComponent, MouseEvent } from "react";
-import { useAuth } from "../../components/contexts/AuthContext";
+import { useAuth } from "../../Components/Contexts/AuthContext";
 import styled from "@emotion/styled";
 import { jsx } from "@emotion/react";
 import { profileStyles } from "./ProfileStyles";
@@ -22,7 +22,7 @@ import {
   checkIfNotInterested,
   updateNotInterested,
   updateInterested,
-} from "../../firebase_util";
+} from "../../FirebaseUtil";
 
 type ProfileParams = {
   email: string;

@@ -6,14 +6,13 @@
 /** @jsx jsx */
 
 import { Button, Form, Alert } from "react-bootstrap";
-import { FunctionComponent, useRef, useState, useEffect } from "react";
-import { useAuth } from "../../components/contexts/AuthContext";
+import { FunctionComponent, useRef, useState } from "react";
+import { useAuth } from "../../Components/Contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
-import firebase, { storage } from "../../firebase";
 import { css, jsx } from "@emotion/react";
 import { signupStyles } from "./SignupStyles";
-import { formField, parseDate, checkIfLegalAge } from "../../Utilities";
-import { handleSignup, userInfo, createProfile } from "../../firebase_util";
+import { formField, checkIfLegalAge } from "../../Utilities";
+import { handleSignup, userInfo, createProfile } from "../../FirebaseUtil";
 
 export const Signup: FunctionComponent = () => {
   const firstnameRef = useRef<HTMLInputElement | null>(null);

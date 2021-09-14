@@ -1,16 +1,16 @@
 /** @format */
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { AuthProvider } from "./components/contexts/AuthContext";
-import { Home } from "./pages/home/Home";
-import { Login } from "./pages/login/Login";
-import { MyProfile } from "./pages/myprofile/MyProfile";
-import { Signup } from "./pages/signup/Signup";
-import { Profile } from "./pages/profile/Profile";
-import { AgeGroup } from "./pages/agegroup/AgeGroup";
-import { PrivateRoute } from "./components/PrivateRoute";
-import { EditProfile } from "./pages/edit_profile/EditProfile";
-import { Topbar } from "./components/topbar/Topbar";
+import { AuthProvider } from "./Components/Contexts/AuthContext";
+import { Home } from "./Pages/Home/Home";
+import { Login } from "./Pages/Login/Login";
+import { MyProfile } from "./Pages/MyProfile/MyProfile";
+import { Signup } from "./Pages/Signup/Signup";
+import { Profile } from "./Pages/Profile/Profile";
+import { AgeGroup } from "./Pages/AgeGroup/AgeGroup";
+import { PrivateRoute } from "./Components/PrivateRoute";
+import { EditProfile } from "./Pages/EditProfile/EditProfile";
+import { Topbar } from "./Components/Topbar/Topbar";
 import { FunctionComponent } from "react";
 
 export const App: FunctionComponent = () => {

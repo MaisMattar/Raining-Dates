@@ -7,11 +7,11 @@ import { Button, Form, Alert } from "react-bootstrap";
 import { useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
-import { useAuth } from "../../components/contexts/AuthContext";
+import { useAuth } from "../../Components/Contexts/AuthContext";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
 import { loginStyles } from "./LoginStyles";
-import { performLogin } from "../../firebase_util";
+import { performLogin } from "../../FirebaseUtil";
 import { formField } from "../../Utilities";
 
 export const Login: FunctionComponent = () => {

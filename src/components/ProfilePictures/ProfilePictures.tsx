@@ -5,7 +5,7 @@
 
 import { useState, useEffect, FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
-import { getProfilePictures } from "../../firebase_util";
+import { getProfilePictures } from "../../FirebaseUtil";
 
 const pictureList = css`
   list-style: none;

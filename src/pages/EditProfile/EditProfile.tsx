@@ -7,7 +7,7 @@ import React, { FunctionComponent, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useRef, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
-import { useAuth } from "../../components/contexts/AuthContext";
+import { useAuth } from "../../Components/Contexts/AuthContext";
 import { jsx } from "@emotion/react";
 import { editProfileStyles } from "./EditProfileStyles";
 import { formField } from "../../Utilities";
@@ -15,7 +15,7 @@ import {
   getProfileInfo,
   updateUser,
   updateUserPassword,
-} from "../../firebase_util";
+} from "../../FirebaseUtil";
 
 export const EditProfile: FunctionComponent = () => {
   const firstnameRef = useRef<HTMLInputElement | null>(null);

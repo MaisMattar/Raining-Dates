@@ -5,8 +5,8 @@
 /** @jsx jsx */
 
 import { Button } from "react-bootstrap";
-import { MyProfileInfo } from "../../components/my_profile_info/MyProfileInfo";
-import { MyProfilePictures } from "../../components/my_profile_pictures/MyProfilePictures";
+import { MyProfileInfo } from "../../Components/MyProfileInfo/MyProfileInfo";
+import { MyProfilePictures } from "../../Components/MyProfilePictures/MyProfilePictures";
 import { useHistory } from "react-router-dom";
 import { FunctionComponent, MouseEvent } from "react";
 import { css, jsx } from "@emotion/react";
