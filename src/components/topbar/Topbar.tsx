@@ -6,15 +6,20 @@
 
 import { AccountBox, Chat, ExitToApp } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
-import { useAuth } from "../Contexts/AuthContext";
+import { useAuth } from "../contexts/authContext";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
-import { topbarStyles } from "./TopbarStyles";
+import { topbarStyles } from "./topbarStyles";
+
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/actions";
 
 export const Topbar: FunctionComponent = () => {
   const { currentUser, logout } = useAuth();
   const history = useHistory();
   const { container, logo, right, icons, iconItem, left, link } = topbarStyles;
+
+  const dispatch = useDispatch();
 
   async function handleLogout() {
     try {
@@ -23,6 +28,8 @@ export const Topbar: FunctionComponent = () => {
     } catch {
       console.log("Failed to logout");
     }
+
+    dispatch(logoutUser());
   }
 
   return (

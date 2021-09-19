@@ -2,7 +2,7 @@
 
 import React, { Component, FunctionComponent } from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
-import { useAuth } from "./Contexts/AuthContext";
+import { useAuth } from "./contexts/authContext";
 
 interface PrivateRouteProps extends RouteProps {}
 
@@ -13,16 +13,4 @@ export const PrivateRoute: FunctionComponent<PrivateRouteProps> = ({
 
   if (currentUser === null) return <Redirect to="/login" />;
   return <Route {...rest} />;
-  // return (
-  //   <Route
-  //     {...rest}
-  //     render={(p) => {
-  //       return currentUser ? (
-  //         <Component {...props} />
-  //       ) : (
-  //         <Redirect to="/login" />
-  //       );
-  //     }}
-  //   ></Route>
-  // );
 };

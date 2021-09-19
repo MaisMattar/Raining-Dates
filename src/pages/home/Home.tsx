@@ -3,9 +3,11 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { Groups } from "../../Components/Groups/Groups";
+import { Groups } from "../../components/groups/groups";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 
 interface Group {
   text: string;
@@ -25,6 +27,13 @@ const homeText = css`
 `;
 
 export const Home: FunctionComponent<HomeProps> = (props) => {
+  const email = useSelector((state: RootState) => state.updateUserStatus.email);
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.updateUserStatus.isLoggedIn
+  );
+  console.log("email = ", email);
+  console.log("isLoggedIn = ", isLoggedIn);
+
   return (
     <div>
       <div css={homeText}>Pick your preferred age group</div>

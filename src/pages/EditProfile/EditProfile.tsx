@@ -7,9 +7,9 @@ import React, { FunctionComponent, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useRef, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
-import { useAuth } from "../../Components/Contexts/AuthContext";
+import { useAuth } from "../../components/contexts/authContext";
 import { jsx } from "@emotion/react";
-import { editProfileStyles } from "./EditProfileStyles";
+import { editProfileStyles } from "./editProfileStyles";
 import { formField } from "../../Utilities";
 import {
   getProfileInfo,

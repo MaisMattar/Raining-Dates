@@ -5,12 +5,12 @@
 /** @jsx jsx */
 
 import { Button } from "react-bootstrap";
-import { MyProfileInfo } from "../../Components/MyProfileInfo/MyProfileInfo";
-import { MyProfilePictures } from "../../Components/MyProfilePictures/MyProfilePictures";
+import { MyProfileInfo } from "../../components/myProfileInfo/myProfileInfo";
+import { MyProfilePictures } from "../../components/myProfilePictures/myProfilePictures";
 import { useHistory } from "react-router-dom";
 import { FunctionComponent, MouseEvent } from "react";
 import { css, jsx } from "@emotion/react";
-import { myProfileStyles } from "./MyProfileStyles";
+import { myProfileStyles } from "./myProfileStyles";
 
 export const MyProfile: FunctionComponent = () => {
   const history = useHistory();

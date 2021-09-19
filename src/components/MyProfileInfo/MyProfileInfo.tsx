@@ -1,8 +1,8 @@
 /** @format */
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { useState, useEffect, useReducer } from "react";
-import { useAuth } from "../Contexts/AuthContext";
+import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/authContext";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
 import { getProfileInfo, userInfo } from "../../FirebaseUtil";

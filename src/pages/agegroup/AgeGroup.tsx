@@ -7,9 +7,9 @@
 
 import { Link } from "react-router-dom";
 import { useState, useEffect, FunctionComponent } from "react";
-import { useAuth } from "../../Components/Contexts/AuthContext";
+import { useAuth } from "../../components/contexts/authContext";
 import { jsx } from "@emotion/react";
-import { ageGroupStyles } from "./AgeGroupStyles";
+import { ageGroupStyles } from "./ageGroupStyles";
 import { getDateInTimestamp } from "../../Utilities";
 import { getAgeGroupProfiles, ageGroupProfile } from "../../FirebaseUtil";
 

@@ -6,12 +6,12 @@
 
 import "./myprofilepictures.css";
 import { useState, useEffect } from "react";
-import { useAuth } from "../Contexts/AuthContext";
+import { useAuth } from "../contexts/authContext";
 import { Cancel, Image } from "@material-ui/icons";
 import { Alert } from "react-bootstrap";
 import { FunctionComponent } from "react";
 import { jsx } from "@emotion/react";
-import { myProfPicStyles } from "./MyProfilePicturesStyles";
+import { myProfPicStyles } from "./myProfilePicturesStyles";
 import {
   getProfilePictures,
   updateUser,

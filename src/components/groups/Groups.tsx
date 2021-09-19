@@ -6,7 +6,7 @@
 import { Link } from "react-router-dom";
 import { FunctionComponent } from "react";
 import { jsx } from "@emotion/react";
-import { groupStyles } from "./GroupStyles";
+import { groupStyles } from "./groupStyles";
 
 interface Group {
   text: string;

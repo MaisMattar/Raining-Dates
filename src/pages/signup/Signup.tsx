@@ -7,14 +7,19 @@
 
 import { Button, Form, Alert } from "react-bootstrap";
 import { FunctionComponent, useRef, useState } from "react";
-import { useAuth } from "../../Components/Contexts/AuthContext";
+import { useAuth } from "../../components/contexts/authContext";
 import { Link, useHistory } from "react-router-dom";
 import { css, jsx } from "@emotion/react";
-import { signupStyles } from "./SignupStyles";
+import { signupStyles } from "./signupStyles";
 import { formField, checkIfLegalAge } from "../../Utilities";
 import { handleSignup, userInfo, createProfile } from "../../FirebaseUtil";
 
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../redux/actions";
+
 export const Signup: FunctionComponent = () => {
+  const dispatch = useDispatch();
+
   const firstnameRef = useRef<HTMLInputElement | null>(null);
   const lastnameRef = useRef<HTMLInputElement | null>(null);
   const dateRef = useRef<HTMLInputElement | null>(null);
@@ -104,6 +109,8 @@ export const Signup: FunctionComponent = () => {
       setError("Failed to create account!");
       return;
     }
+
+    dispatch(loginUser(emailRef!.current!.value));
 
     history.push("/");
   }

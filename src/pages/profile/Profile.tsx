@@ -5,16 +5,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { ProfilePictures } from "../../Components/ProfilePictures/ProfilePictures";
-import { ProfileInfo } from "../../Components/ProfileInfo/ProfileInfo";
+import { ProfilePictures } from "../../components/profilePictures/profilePictures";
+import { ProfileInfo } from "../../components/profileInfo/profileInfo";
 import { Favorite, NotInterested } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, FunctionComponent, MouseEvent } from "react";
-import { useAuth } from "../../Components/Contexts/AuthContext";
+import { useAuth } from "../../components/contexts/authContext";
 import styled from "@emotion/styled";
 import { jsx } from "@emotion/react";
-import { profileStyles } from "./ProfileStyles";
+import { profileStyles } from "./profileStyles";
 import {
   getProfileInfo,
   userInfo,
