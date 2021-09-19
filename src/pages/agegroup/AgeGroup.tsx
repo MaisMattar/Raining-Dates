@@ -7,11 +7,12 @@
 
 import { Link } from "react-router-dom";
 import { useState, useEffect, FunctionComponent } from "react";
-import { useAuth } from "../../components/contexts/authContext";
 import { jsx } from "@emotion/react";
 import { ageGroupStyles } from "./ageGroupStyles";
 import { getDateInTimestamp } from "../../Utilities";
 import { getAgeGroupProfiles, ageGroupProfile } from "../../FirebaseUtil";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 
 interface Group {
   text: string;
@@ -24,11 +25,14 @@ interface AgeGroupProps {
 }
 
 export const AgeGroup: FunctionComponent<AgeGroupProps> = (props) => {
+  const userEmail = useSelector(
+    (state: RootState) => state.updateUserStatus.email
+  );
+
   const [peopleProfiles, setPeopleProfiles] = useState<Array<ageGroupProfile>>(
     []
   );
 
-  const { currentUser } = useAuth();
   const { text, peopleList, peoplePicture, listItem } = ageGroupStyles;
 
   const setAgeGroupProfiles = async () => {
@@ -44,7 +48,7 @@ export const AgeGroup: FunctionComponent<AgeGroupProps> = (props) => {
   }, []);
 
   const pictures = peopleProfiles.map((personProfile, index) => {
-    if (personProfile.email !== currentUser.email) {
+    if (personProfile.email !== userEmail) {
       return (
         <li css={listItem} key={personProfile.email}>
           <Link to={"/profile/" + personProfile.email}>

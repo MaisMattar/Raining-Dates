@@ -2,11 +2,12 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { useState, useEffect } from "react";
-import { useAuth } from "../contexts/authContext";
 import { FunctionComponent } from "react";
 import { css, jsx } from "@emotion/react";
 import { getProfileInfo, userInfo } from "../../FirebaseUtil";
 import { ProfileInfoType } from "../../Utilities";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 
 const profileText = css`
   font-size: 23px;
@@ -29,20 +30,23 @@ const initialState = {
 };
 
 export const MyProfileInfo: FunctionComponent = () => {
-  const { currentUser } = useAuth();
+  const userEmail = useSelector(
+    (state: RootState) => state.updateUserStatus.email
+  );
+
   const [myProfileInfo, setMyProfileInfo] = useState(initialState);
 
   const profileInfo: Array<ProfileInfoType> = [
     { id: "firstname", label: "First Name", value: myProfileInfo.firstName },
     { id: "lastname", label: "Last Name", value: myProfileInfo.lastName },
     { id: "date", label: "Date of Birth", value: myProfileInfo.date },
-    { id: "email", label: "Email", value: currentUser.email },
+    { id: "email", label: "Email", value: userEmail },
     { id: "education", label: "Education", value: myProfileInfo.education },
     { id: "workplace", label: "Workplace", value: myProfileInfo.workplace },
   ];
 
   const getUserInfo = async () => {
-    const userInfoData: userInfo = await getProfileInfo(currentUser.email);
+    const userInfoData: userInfo = await getProfileInfo(userEmail);
     setMyProfileInfo({
       firstName: userInfoData.firstName,
       lastName: userInfoData.lastName,

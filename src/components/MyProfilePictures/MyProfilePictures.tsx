@@ -6,7 +6,6 @@
 
 import "./myprofilepictures.css";
 import { useState, useEffect } from "react";
-import { useAuth } from "../contexts/authContext";
 import { Cancel, Image } from "@material-ui/icons";
 import { Alert } from "react-bootstrap";
 import { FunctionComponent } from "react";
@@ -17,9 +16,14 @@ import {
   updateUser,
   uploadImageToStorage,
 } from "../../FirebaseUtil";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 
 export const MyProfilePictures: FunctionComponent = () => {
-  const { currentUser } = useAuth();
+  const userEmail = useSelector(
+    (state: RootState) => state.updateUserStatus.email
+  );
+
   const [loading, setLoading] = useState(false);
   const [profilePictures, setProfilePictures] = useState<Array<string>>([]);
   const [error, setError] = useState("");
@@ -33,7 +37,7 @@ export const MyProfilePictures: FunctionComponent = () => {
   } = myProfPicStyles;
 
   const setMyProfilePictures = async () => {
-    const images = await getProfilePictures(currentUser.email);
+    const images = await getProfilePictures(userEmail);
     setProfilePictures(images);
   };
 
@@ -52,22 +56,19 @@ export const MyProfilePictures: FunctionComponent = () => {
 
     const profilePicsCopy = [...profilePictures];
     profilePicsCopy.splice(imageIndex, 1);
-    await updateUser(currentUser.email, { images: profilePicsCopy });
+    await updateUser(userEmail, { images: profilePicsCopy });
     setProfilePictures(profilePicsCopy);
   };
 
   const uploadImage = async (image: File) => {
-    const imageUrl = await uploadImageToStorage(
-      currentUser.email + image.name,
-      image
-    );
+    const imageUrl = await uploadImageToStorage(userEmail + image.name, image);
     return imageUrl;
   };
 
   const addImageToProfile = async (imageUrl: string) => {
     const profilePicsCopy = [...profilePictures];
     profilePicsCopy.push(imageUrl);
-    await updateUser(currentUser.email, { images: profilePicsCopy });
+    await updateUser(userEmail, { images: profilePicsCopy });
     setProfilePictures(profilePicsCopy);
   };
 

@@ -13,12 +13,17 @@ import { topbarStyles } from "./topbarStyles";
 
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/actions";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 
 export const Topbar: FunctionComponent = () => {
-  const { currentUser, logout } = useAuth();
+  const { logout } = useAuth();
   const history = useHistory();
   const { container, logo, right, icons, iconItem, left, link } = topbarStyles;
 
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.updateUserStatus.isLoggedIn
+  );
   const dispatch = useDispatch();
 
   async function handleLogout() {
@@ -45,7 +50,7 @@ export const Topbar: FunctionComponent = () => {
         </Link>
       </div>
       <div css={right}>
-        {currentUser && (
+        {isLoggedIn && (
           <div css={icons}>
             <div css={iconItem}>
               <Link css={link} to="/myprofile">

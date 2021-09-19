@@ -14,6 +14,8 @@ import { useState, useEffect, FunctionComponent, MouseEvent } from "react";
 import { useAuth } from "../../components/contexts/authContext";
 import styled from "@emotion/styled";
 import { jsx } from "@emotion/react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 import { profileStyles } from "./profileStyles";
 import {
   getProfileInfo,
@@ -29,11 +31,14 @@ type ProfileParams = {
 };
 
 export const Profile: FunctionComponent = () => {
+  const userEmail = useSelector(
+    (state: RootState) => state.updateUserStatus.email
+  );
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [interested, setInterested] = useState(false);
   const [notInterested, setNotInterested] = useState(false);
-  const { currentUser } = useAuth();
   const { container, text, buttonsContainer, iconButton, part } = profileStyles;
 
   let { email } = useParams<ProfileParams>();
@@ -55,14 +60,11 @@ export const Profile: FunctionComponent = () => {
   };
 
   const setInterest = async () => {
-    const interested = await checkIfInterested(currentUser.email, email);
+    const interested = await checkIfInterested(userEmail, email);
     console.log("interested = ", interested);
     setInterested(interested);
     if (!interested) {
-      const notInterested = await checkIfNotInterested(
-        currentUser.email,
-        email
-      );
+      const notInterested = await checkIfNotInterested(userEmail, email);
       setNotInterested(notInterested);
     }
   };
@@ -74,7 +76,7 @@ export const Profile: FunctionComponent = () => {
 
   const handleInterested = async (e: MouseEvent) => {
     if (!interested) {
-      await updateInterested(currentUser.email, email);
+      await updateInterested(userEmail, email);
       setInterested(true);
       setNotInterested(false);
     }
@@ -82,7 +84,7 @@ export const Profile: FunctionComponent = () => {
 
   const handleNotInterested = async (e: MouseEvent) => {
     if (!notInterested) {
-      await updateNotInterested(currentUser.email, email);
+      await updateNotInterested(userEmail, email);
       setNotInterested(true);
       setInterested(false);
     }
