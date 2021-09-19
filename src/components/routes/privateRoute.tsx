@@ -2,15 +2,18 @@
 
 import React, { FunctionComponent } from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
-import { useAuth } from "../contexts/authContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 
 interface PrivateRouteProps extends RouteProps {}
 
 export const PrivateRoute: FunctionComponent<PrivateRouteProps> = ({
   ...rest
 }) => {
-  const { currentUser } = useAuth();
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.updateUserStatus.isLoggedIn
+  );
 
-  if (currentUser === null) return <Redirect to="/login" />;
+  if (!isLoggedIn) return <Redirect to="/login" />;
   return <Route {...rest} />;
 };

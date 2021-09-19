@@ -7,6 +7,8 @@ import React, {
   FunctionComponent,
 } from "react";
 import { auth } from "../../firebase";
+import { useDispatch } from "react-redux";
+import { loginUser, logoutUser } from "../../redux/actions";
 
 type ContextProps = {
   currentUser: any;
@@ -24,6 +26,7 @@ export function useAuth() {
 }
 
 export const AuthProvider: FunctionComponent = (props) => {
+  const dispatch = useDispatch();
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,6 +39,7 @@ export const AuthProvider: FunctionComponent = (props) => {
   }
 
   function logout() {
+    dispatch(logoutUser());
     return auth.signOut();
   }
 
@@ -52,6 +56,7 @@ export const AuthProvider: FunctionComponent = (props) => {
   useEffect(() => {
     const unsubscriber = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
+      if (user && user.email) dispatch(loginUser(user.email));
       setLoading(false);
     });
     return () => {

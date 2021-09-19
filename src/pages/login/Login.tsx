@@ -14,8 +14,7 @@ import { loginStyles } from "./loginStyles";
 import { performLogin } from "../../FirebaseUtil";
 import { formField } from "../../Utilities";
 
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../redux/actions";
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
 
 export const Login: FunctionComponent = () => {
@@ -25,8 +24,6 @@ export const Login: FunctionComponent = () => {
   );
   console.log("email = ", email);
   console.log("isLoggedIn = ", isLoggedIn);
-
-  const dispatch = useDispatch();
 
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -73,8 +70,6 @@ export const Login: FunctionComponent = () => {
     );
 
     if (loginResult) {
-      dispatch(loginUser(emailRef!.current!.value));
-
       history.push("/");
     } else {
       setError("Failed to log in");

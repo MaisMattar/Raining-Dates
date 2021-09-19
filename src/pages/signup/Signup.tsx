@@ -14,12 +14,7 @@ import { signupStyles } from "./signupStyles";
 import { formField, checkIfLegalAge } from "../../Utilities";
 import { handleSignup, userInfo, createProfile } from "../../FirebaseUtil";
 
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../redux/actions";
-
 export const Signup: FunctionComponent = () => {
-  const dispatch = useDispatch();
-
   const firstnameRef = useRef<HTMLInputElement | null>(null);
   const lastnameRef = useRef<HTMLInputElement | null>(null);
   const dateRef = useRef<HTMLInputElement | null>(null);
@@ -109,8 +104,6 @@ export const Signup: FunctionComponent = () => {
       setError("Failed to create account!");
       return;
     }
-
-    dispatch(loginUser(emailRef!.current!.value));
 
     history.push("/");
   }
