@@ -8,7 +8,8 @@ import { MyProfile } from "./pages/myProfile/myProfile";
 import { Signup } from "./pages/signup/signup";
 import { Profile } from "./pages/profile/profile";
 import { AgeGroup } from "./pages/ageGroup/ageGroup";
-import { PrivateRoute } from "./components/privateRoute";
+import { PrivateRoute } from "./components/routes/privateRoute";
+import { PublicRoute } from "./components/routes/publicRoute";
 import { EditProfile } from "./pages/editProfile/editProfile";
 import { Topbar } from "./components/topbar/topbar";
 import { FunctionComponent } from "react";
@@ -57,8 +58,8 @@ export const App: FunctionComponent = () => {
                 path="/edit-profile"
                 component={EditProfile}
               />
-              <Route key="/login" path="/login" component={Login} />
-              <Route key="/signup" path="/signup" component={Signup} />
+              <PublicRoute key="/login" path="/login" component={Login} />
+              <PublicRoute key="/signup" path="/signup" component={Signup} />
             </Switch>
           </div>
         </Router>
